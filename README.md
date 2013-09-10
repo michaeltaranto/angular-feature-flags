@@ -18,7 +18,7 @@ Sets a temporary cookie that allow you to preview the feature for a given time f
 The flag data that drives the feature flag service is a json format. Below is an example:
 ```json
 [
-    { "key": "FeatureId", "name": "Short name of my feature", "description": "A long description of the feature" },
+    { "key": "...", "name": "...", "description": "..." },
     ...
 ]
 ```
@@ -38,7 +38,37 @@ The flag data that drives the feature flag service is a json format. Below is an
 </table>
 
 
+### Configuration
 
-### Still to come
+In Flag Service there are two customisable constants for the module
 
-A demo.
+<table>
+   <tr>
+    <td><b>COOKIE_PREFIX</b></td>
+    <td>Allows you to namespace your cookies</td>
+   </tr>
+   <tr>
+    <td><b>FLAG_TIMEOUT</b></td>
+    <td>Automatically expires the cookie after the given number of seconds. Useful to make sure that the experimental feature isn't left on accidentally.</td>
+   </tr>
+</table>
+
+
+### Running the demo
+
+Running the demo is easy assuming you have Grunt installed:
+
+- Checkout the project
+- Switch to the directory
+- Run 'grunt server'
+
+Should launch the demo in your default browser
+
+
+### Running the unit test
+
+This relies on Grunt also obviously, to run the test suite:
+
+- Checkout the project
+- Switch to the directory
+- Run 'grunt test'

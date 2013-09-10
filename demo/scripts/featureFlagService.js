@@ -1,7 +1,7 @@
 angular.module("feature-flags", {})
     .constant("COOKIE_PREFIX", "my-app")
     .constant("FLAG_TIMEOUT", 900)
-    .service("FlagsService", function($http, COOKIE_PREFIX, FLAG_TIMEOUT) {
+    .service("FeatureFlagService", function($http, COOKIE_PREFIX, FLAG_TIMEOUT) {
         var cache = [],
 
             _setActiveIfCookiePresent = function(flag) {

@@ -107,5 +107,27 @@
                 expect(flag.active).toBe(false);
             });
         });
+        
+        describe("when I check a feature flags state", function() {
+            beforeEach(function() {
+                flagsService.enable(FLAGS[0]);
+                flagsService.disable(FLAGS[1]);
+            });
+
+            afterEach(inject(function(COOKIE_PREFIX) {
+                document.cookie = COOKIE_PREFIX + "." + FLAGS[0].key + "=false;path=/;expires=" + new Date(0);
+                FLAGS[0].active = null;
+                document.cookie = COOKIE_PREFIX + "." + FLAGS[1].key + "=false;path=/;expires=" + new Date(0);
+                FLAGS[1].active = null;
+            }));
+
+            it("should return true if the feature is enabled", function() {
+                expect(flagsService.isOn(FLAGS[0].key)).toBe(true);
+            });
+
+            it("should return true if the feature is disabled", function() {
+                expect(flagsService.isOn(FLAGS[1].key)).toBe(false);
+            });
+        });
     });
 }());
