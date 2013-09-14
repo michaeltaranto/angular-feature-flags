@@ -5,11 +5,11 @@
     <script src="vendor/angular.min.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/directives.js"></script>
-    <script src="scripts/featureFlagService.js"></script>
+    <script src="scripts/flagsService.js"></script>
 </head>
 <body ng-app="my-app" ng-controller="MyCtrl" ng-class="{ toggle: showFlags }" ng-cloak>
     <div class="toggles" ng-click="showFlags=!showFlags"></div>
-    <div class="main">
+    <div class="main" ng-click="showFlags=false">
         <h1>My App</h1>
         <div activity-feed ng-if="isEnabled('activityFeed')"></div>
         <div messaging ng-if="isEnabled('messages')"></div>

@@ -1,12 +1,7 @@
-angular.module("feature-flags", {})
-    .constant("COOKIE_PREFIX", "my-app")
-    .constant("FLAG_TIMEOUT", 900)
-    .service("FeatureFlagService", function($http, COOKIE_PREFIX, FLAG_TIMEOUT) {
+angular.module("local-storage-feature-flags", {})
+    .constant("FLAG_PREFIX", "my-app")
+    .service("FlagsService", function($http, FLAG_PREFIX) {
         var cache = [],
-
-            _setActiveIfCookiePresent = function(flag) {
-                flag.active = document.cookie.indexOf(COOKIE_PREFIX + "." + flag.key) > -1;
-            },
 
             get = function() {
                 return cache;
@@ -15,23 +10,25 @@ angular.module("feature-flags", {})
             fetch = function() {
                 return $http.get("data/flags.json")
                             .success(function(flags) {
-                                flags.forEach(_setActiveIfCookiePresent);
+                                flags.forEach(function(flag) {
+                                    flag.active = isOn(flag.key);
+                                });
                                 angular.copy(flags, cache);
                             });
             },
 
             enable = function(flag) {
                 flag.active = true;
-                document.cookie = COOKIE_PREFIX + "." + flag.key + "=true;path=/;max-age=" + FLAG_TIMEOUT;
+                localStorage.setItem(FLAG_PREFIX + "." + flag.key, true);
             },
 
             disable = function(flag) {
                 flag.active = false;
-                document.cookie = COOKIE_PREFIX + "." + flag.key + "=false;path=/;expires=" + new Date(0);
+                localStorage.removeItem(FLAG_PREFIX + "." + flag.key);
             },
 
             isOn = function(key) {
-                return document.cookie.indexOf(COOKIE_PREFIX + "." + key) > -1;
+                return localStorage.getItem(FLAG_PREFIX + "." + key) !== null;
             };
 
         return {

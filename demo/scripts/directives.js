@@ -31,24 +31,24 @@ angular.module("my-app")
             replace: true
         }
     })
-    .directive("featureFlags", function($timeout, FeatureFlagService) {
+    .directive("featureFlags", function($timeout, FlagsService) {
         return {
             restrict: "A",
             scope: {},
             link: function(scope) {
                 var highlightChange;
 
-                scope.flags = FeatureFlagService.get();
+                scope.flags = FlagsService.get();
 
                 scope.toggle = function(flag) {
-                    FeatureFlagService[flag.active ? "disable" : "enable"](flag);
+                    FlagsService[flag.active ? "disable" : "enable"](flag);
 
                     scope.changed = flag;
                     $timeout.cancel(highlightChange);
                     highlightChange = $timeout(function() { scope.changed = false; }, 3000);
                 };
 
-                FeatureFlagService.fetch();
+                FlagsService.fetch();
             },
             template: '<div class="flagContainer">' +
                       '    <h1>Experimental Flags</h1>'+

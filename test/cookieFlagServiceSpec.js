@@ -11,7 +11,7 @@
             ],
             $http;
 
-        beforeEach(module("feature-flags"));
+        beforeEach(module("cookie-feature-flags"));
 
         beforeEach(inject(function($injector, FlagsService) {
             $http = $injector.get("$httpBackend");

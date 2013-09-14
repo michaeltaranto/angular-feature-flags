@@ -10,7 +10,7 @@ Abstracting your application functionality into chunks and implementing them as 
 
 ### How it works
 
-Sets a temporary cookie that allow you to preview the feature for a given time frame (customisable), or manually turn it off when you're done.
+The module deals with toggling flags letting you to try out the new feature, but then you turn it off when you're done. There are two versions under the src folder, one that uses cookies and another that uses local storage. So depending on what browsers you support you can choose.
 
 
 ### Flag data
@@ -25,7 +25,7 @@ The flag data that drives the feature flag service is a json format. Below is an
 <table>
    <tr>
     <td><b>key</b></td>
-    <td>Unique key that is used to lookup the cookie. It will be namespaced by the COOKIE_PREFIX constant in the feature flag service</td>
+    <td>Unique key that is used to name the item in local storage. It will be namespaced by the FLAG_PREFIX constant in the feature flag service</td>
    </tr>
    <tr>
     <td><b>name</b></td>
@@ -40,17 +40,26 @@ The flag data that drives the feature flag service is a json format. Below is an
 
 ### Configuration
 
-In Flag Service there are two customisable constants for the module
+In the cookie version there are two customisable module constants:
 
 <table>
-   <tr>
+  <tr>
     <td><b>COOKIE_PREFIX</b></td>
     <td>Allows you to namespace your cookies</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td><b>FLAG_TIMEOUT</b></td>
     <td>Automatically expires the cookie after the given number of seconds. Useful to make sure that the experimental feature isn't left on accidentally.</td>
-   </tr>
+  </tr>
+</table>
+
+While the local storage version has only one customisable module constant:
+
+<table>
+  <tr>
+    <td><b>FLAG_PREFIX</b></td>
+    <td>Allows you to namespace your flag</td>
+  </tr>
 </table>
 
 
