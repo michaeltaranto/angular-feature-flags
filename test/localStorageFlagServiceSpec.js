@@ -60,11 +60,11 @@
                 $http.verifyNoOutstandingRequest();
             }));
 
-            it("should set the flag as active on load if there's a cookie present", function() {
+            it("should set the flag as active on load if there's a flag present", function() {
                 expect(flag1.active).toBe(true);
             });
 
-            it("should set the flag as inactive on load if there's no cookie present", function() {
+            it("should set the flag as inactive on load if there's no flag present", function() {
                 expect(flag2.active).toBe(false);
             });
         });
@@ -81,7 +81,7 @@
                 flag.active = null;
             }));
 
-            it("should set a cookie with the correct name", inject(function(FLAG_PREFIX) {
+            it("should set a flag with the correct name", inject(function(FLAG_PREFIX) {
                 expect(localStorage.getItem(FLAG_PREFIX + "." + flag.key)).toBeTruthy();
             }));
 
@@ -102,7 +102,7 @@
                 flag.active = null;
             }));
 
-            it("should remove the cookie", inject(function(FLAG_PREFIX) {
+            it("should remove the flag", inject(function(FLAG_PREFIX) {
                 expect(localStorage.getItem(FLAG_PREFIX + "." + flag.key)).toBeFalsy();
             }));
 
