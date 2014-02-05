@@ -1,7 +1,28 @@
 angular.module("cookie-feature-flags", {})
     .constant("COOKIE_PREFIX", "my-app")
     .constant("FLAG_TIMEOUT", 900)
-    .service("FlagsService", function($http, COOKIE_PREFIX, FLAG_TIMEOUT) {
+    .constant("FLAGS_URL", "data/flags.json")
+    .run(function($rootScope, FlagsService) {
+        $rootScope.featureFlagEnable = FlagsService.enable;
+        $rootScope.featureFlagDisable = FlagsService.disable;
+
+        FlagsService.fetch();
+    })
+    .directive("featureFlag", function(FlagsService) {
+        return {
+            restrict: "A",
+            link: function postLink($scope, element, attrs) {
+                $scope.$watch(function() {
+                    return FlagsService.isOn(attrs.featureFlag);
+                }, function(isEnabled) {
+                    if (isEnabled === false) {
+                        element.remove();
+                    }
+                });
+            }
+        };
+    })
+    .service("FlagsService", function($http, COOKIE_PREFIX, FLAG_TIMEOUT, FLAGS_URL) {
         var cache = [],
 
             _setActiveIfCookiePresent = function(flag) {
@@ -13,7 +34,7 @@ angular.module("cookie-feature-flags", {})
             },
 
             fetch = function() {
-                return $http.get("data/flags.json")
+                return $http.get(FLAGS_URL)
                             .success(function(flags) {
                                 flags.forEach(_setActiveIfCookiePresent);
                                 angular.copy(flags, cache);

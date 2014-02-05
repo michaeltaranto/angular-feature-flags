@@ -5,7 +5,7 @@ angular.module("my-app")
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Activity Feed</div>',
             replace: true
-        }
+        };
     })
     .directive("messaging", function() {
         return {
@@ -13,7 +13,7 @@ angular.module("my-app")
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Messaging</div>',
             replace: true
-        }
+        };
     })
     .directive("userProfile", function() {
         return {
@@ -21,7 +21,7 @@ angular.module("my-app")
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">User Profile</div>',
             replace: true
-        }
+        };
     })
     .directive("settings", function() {
         return {
@@ -29,26 +29,25 @@ angular.module("my-app")
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Settings</div>',
             replace: true
-        }
+        };
     })
-    .directive("featureFlags", function($timeout, FlagsService) {
+    .directive("switches", function($timeout, FlagsService) {
         return {
             restrict: "A",
-            scope: {},
-            link: function(scope) {
+            link: function postLink($scope) {
                 var highlightChange;
 
-                scope.flags = FlagsService.get();
+                $scope.flags = FlagsService.get();
 
-                scope.toggle = function(flag) {
-                    FlagsService[flag.active ? "disable" : "enable"](flag);
+                $scope.toggle = function(flag) {
+                    $scope[flag.active ? "featureFlagDisable" : "featureFlagEnable"](flag);
 
-                    scope.changed = flag;
+                    $scope.changed = flag;
                     $timeout.cancel(highlightChange);
-                    highlightChange = $timeout(function() { scope.changed = false; }, 3000);
+                    highlightChange = $timeout(function() {
+                        $scope.changed = false;
+                    }, 3000);
                 };
-
-                FlagsService.fetch();
             },
             template: '<div class="flagContainer">' +
                       '    <h1>Experimental Flags</h1>'+
@@ -59,5 +58,5 @@ angular.module("my-app")
                       '    </div>'+
                       '</div>',
             replace: true
-        }
+        };
     });

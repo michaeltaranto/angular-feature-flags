@@ -17,6 +17,17 @@ module.exports = function(grunt) {
             }
         },
 
+        jshint: {
+            options: {
+                reporter: require('jshint-stylish')
+            },
+            src: [
+                'demo/scripts/**/*.js',
+                'src/**/*.js',
+                'test/**/*Spec.js'
+            ]
+        },
+
         karma:{
             unit: {
                 options: {
@@ -27,18 +38,29 @@ module.exports = function(grunt) {
                         'src/**/*.js',
                         'test/**/*Spec.js'
                     ],
-                    browsers: ['PhantomJS'],
-                    singleRun: true
+                    browsers: [ 'PhantomJS' ],
+                    singleRun: true,
+                    reporters: [ 'progress', 'coverage' ],
+                    preprocessors: {
+                        'src/**/*.js': ['coverage']
+                    },
+                    coverageReporter: {
+                        type : 'html',
+                        dir : 'test/coverage/'
+                    }
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('server', ['open', 'connect']);
     grunt.registerTask('test', ['karma']);
+
+    grunt.registerTask('default', ['jshint', 'test'])
 
 };

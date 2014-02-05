@@ -3,19 +3,21 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="vendor/angular.min.js"></script>
-    <script src="scripts/app.js"></script>
+    <script>
+        angular.module("my-app", [ "feature-flags" ]);
+    </script>
     <script src="scripts/directives.js"></script>
     <script src="scripts/flagsService.js"></script>
 </head>
-<body ng-app="my-app" ng-controller="MyCtrl" ng-class="{ toggle: showFlags }" ng-cloak>
+<body ng-app="my-app" ng-class="{ toggle: showFlags }" ng-cloak>
     <div class="toggles" ng-click="showFlags=!showFlags"></div>
     <div class="main" ng-click="showFlags=false">
         <h1>My App</h1>
-        <div activity-feed ng-if="isEnabled('activityFeed')"></div>
-        <div messaging ng-if="isEnabled('messages')"></div>
-        <div user-profile ng-if="isEnabled('userProfile')"></div>
-        <div settings ng-if="isEnabled('settings')"></div>
+        <div activity-feed feature-flag="activityFeed"></div>
+        <div messaging feature-flag="messages"></div>
+        <div user-profile feature-flag="userProfile"></div>
+        <div settings feature-flag="settings"></div>
     </div>
-    <div feature-flags></div>
+    <div switches></div>
 </body>
 </html>

@@ -1,6 +1,27 @@
 angular.module("local-storage-feature-flags", {})
     .constant("FLAG_PREFIX", "my-app")
-    .service("FlagsService", function($http, FLAG_PREFIX) {
+    .constant("FLAGS_URL", "data/flags.json")
+    .run(function($rootScope, FlagsService) {
+        $rootScope.featureFlagEnable = FlagsService.enable;
+        $rootScope.featureFlagDisable = FlagsService.disable;
+        
+        FlagsService.fetch();
+    })
+    .directive("featureFlag", function(FlagsService) {
+        return {
+            restrict: "A",
+            link: function postLink($scope, element, attrs) {
+                $scope.$watch(function() {
+                    return FlagsService.isOn(attrs.featureFlag);
+                }, function(isEnabled) {
+                    if (isEnabled === false) {
+                        element.remove();
+                    }
+                });
+            }
+        };
+    })
+    .service("FlagsService", function($http, FLAG_PREFIX, FLAGS_URL) {
         var cache = [],
 
             get = function() {
@@ -8,7 +29,7 @@ angular.module("local-storage-feature-flags", {})
             },
 
             fetch = function() {
-                return $http.get("data/flags.json")
+                return $http.get(FLAGS_URL)
                             .success(function(flags) {
                                 flags.forEach(function(flag) {
                                     flag.active = isOn(flag.key);

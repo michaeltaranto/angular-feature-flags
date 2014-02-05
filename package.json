@@ -4,6 +4,9 @@
     "grunt": "~0.4.1",
     "grunt-contrib-connect": "~0.4.1",
     "grunt-karma": "~0.6.2",
-    "grunt-open": "~0.2.2"
+    "grunt-open": "~0.2.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "jshint-stylish": "~0.1.5",
+    "karma-coverage": "~0.1.5"
   }
 }
