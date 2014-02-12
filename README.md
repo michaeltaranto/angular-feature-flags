@@ -44,7 +44,7 @@ In the cookie version there are two customisable module constants:
 
 <table>
   <tr>
-    <td><b>COOKIE_PREFIX</b></td>
+    <td><b>FLAG_PREFIX</b></td>
     <td>Allows you to namespace your cookies</td>
   </tr>
   <tr>

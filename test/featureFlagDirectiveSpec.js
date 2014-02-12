@@ -4,7 +4,7 @@
     describe("Directive: FeatureFlag", function() {
         var $scope, container;
 
-        beforeEach(module('local-storage-feature-flags', function($provide) {
+        beforeEach(module('feature-flags', function($provide) {
             return $provide.decorator('FlagsService', function($delegate) {
                 $delegate.fetch = angular.noop;
                 
