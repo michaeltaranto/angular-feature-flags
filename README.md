@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/mjt01/angular-feature-flags.png?branch=master)](https://travis-ci.org/mjt01/angular-feature-flags)
+[![Build Status](https://travis-ci.org/mjt01/angular-feature-flags.png?branch=master)](https://travis-ci.org/mjt01/angular-feature-flags)
 ## angular-feature-flags
 
 An AngularJS module that allows you to control when you release new features in your app by putting them behind feature falgs/switches.
