@@ -1,5 +1,27 @@
 {
   "name": "angular-feature-flags",
+  "version": "0.2.0",
+  "description": "Feature Flag module for Angular JS apps",
+  "keywords": [
+    "angular",
+    "feature flag",
+    "feature switch"
+  ],
+  "homepage": "https://github.com/mjt01/angular-feature-flags",
+  "bugs": "https://github.com/mjt01/angular-feature-flags/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mjt01/angular-feature-flags.git"
+  },
+  "author": {
+    "name": "Michael Taranto"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-connect": "~0.4.1",

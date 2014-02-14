@@ -1,16 +1,19 @@
+[![Build Status](https://secure.travis-ci.org/mjt01/angular-feature-flags.png?branch=master)](https://travis-ci.org/mjt01/angular-feature-flags)
 ## angular-feature-flags
 
-An AngularJS module that allows you to control the release of new features in your app by putting them behind feature flag driven directives.
+An AngularJS module that allows you to control when you release new features in your app by putting them behind feature falgs/switches.
 
 
 ### The idea
 
-Abstracting your application functionality into chunks and implementing them as loosely coupled directives. This allows you to completely remove sections of your application by simply toggling a single element.
+Abstracting your application functionality into small chunks and implementing them as loosely coupled directives. This allows you to completely remove sections of your application by simply toggling a single dom element.
 
 
 ### How it works
 
-The module deals with toggling flags letting you to try out the new feature, but then you turn it off when you're done. There are two versions under the src folder, one that uses cookies and another that uses local storage. So depending on what browsers you support you can choose.
+The basic premise is you write your feature and wrap it up in a directive, then where you implement that directive in your markup you add the **feature-flag** directive to the same element. You can then pass the **key** of the flag to this directive to resolve whether of not this feature should be enabled.
+
+If enabled angular will process the directive as normal, if disabled angular will remove the element from the dom.
 
 
 ### Flag data
@@ -25,7 +28,7 @@ The flag data that drives the feature flag service is a json format. Below is an
 <table>
    <tr>
     <td><b>key</b></td>
-    <td>Unique key that is used to name the item in local storage. It will be namespaced by the FLAG_PREFIX constant in the feature flag service</td>
+    <td>Unique key that is used from the markup to resolve whether a flag is active or not.</td>
    </tr>
    <tr>
     <td><b>name</b></td>
@@ -40,25 +43,22 @@ The flag data that drives the feature flag service is a json format. Below is an
 
 ### Configuration
 
-In the cookie version there are two customisable module constants:
-
-<table>
-  <tr>
-    <td><b>FLAG_PREFIX</b></td>
-    <td>Allows you to namespace your cookies</td>
-  </tr>
-  <tr>
-    <td><b>FLAG_TIMEOUT</b></td>
-    <td>Automatically expires the cookie after the given number of seconds. Useful to make sure that the experimental feature isn't left on accidentally.</td>
-  </tr>
-</table>
+There are three customisable module constants:
 
 While the local storage version has only one customisable module constant:
 
 <table>
   <tr>
     <td><b>FLAG_PREFIX</b></td>
-    <td>Allows you to namespace your flag</td>
+    <td>Allows you to namespace your flag (useful for cookie or local storage usage)</td>
+  </tr>
+  <tr>
+    <td><b>FLAG_STORAGE</b></td>
+    <td>Allows you to configure the storage location. Currently <b>local storage</b>, <b>cookies</b> are available but nothing stopping you from adding your own.</td>
+  </tr>
+  <tr>
+    <td><b>FLAGS_URL</b></td>
+    <td>A url or relative file path to retrieve the json file containing all the available feature flags</td>
   </tr>
 </table>
 
