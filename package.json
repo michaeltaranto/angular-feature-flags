@@ -11,7 +11,7 @@
   "bugs": "https://github.com/mjt01/angular-feature-flags/issues",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mjt01/angular-feature-flags.git"
+    "url": "git+https://github.com/mjt01/angular-feature-flags.git"
   },
   "author": {
     "name": "Michael Taranto"
