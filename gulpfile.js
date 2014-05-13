@@ -11,8 +11,10 @@ var gulp = require('gulp'),
     header = require('gulp-header'),
     wrap = require('gulp-wrap'),
     concat = require('gulp-concat'),
+    clean = require('gulp-clean'),
     ngmin = require('gulp-ngmin'),
     karma = require('gulp-karma'),
+    coveralls = require('gulp-coveralls'),
     pkg = require('./package.json'),
 
 
@@ -28,8 +30,10 @@ var gulp = require('gulp'),
                 'src/*.js': ['coverage']
             },
             coverageReporter: {
-                type : 'html',
-                dir : 'test/coverage/'
+                reporters: [
+                    { type: 'html', dir: 'test/coverage/' },
+                    { type: 'lcov', dir: 'test/coverage/' }
+                ]
             },
             action: action
         };
@@ -60,12 +64,24 @@ gulp.task('lint', function() {
 });
 
 
-gulp.task('test', function() {
+gulp.task('test', ['clean'], function() {
     return gulp.src(KARMA_FILES)
         .pipe(karma(karmaConfig('run')))
         .on('error', function(err) {
             throw err;
         });
+});
+
+
+gulp.task('clean', function() {
+    return gulp.src('test/coverage')
+        .pipe(clean());
+})
+
+
+gulp.task('coveralls', ['test'], function() {
+  return gulp.src(['test/coverage/**/lcov.info'])
+    .pipe(coveralls());
 });
 
 
