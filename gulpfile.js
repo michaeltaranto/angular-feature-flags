@@ -91,9 +91,7 @@ gulp.task('reload', function() {
 
 gulp.task('build', function () {
     return gulp.src(SRC_FILES)
-        .pipe(concat('featureFlags.min.js'))
-        .pipe(ngmin())
-        .pipe(uglify())
+        .pipe(concat('featureFlags.js'))
         .pipe(wrap('(function(){\n<%= contents %>\n}());'))
         .pipe(header([
             '/*!',
@@ -102,6 +100,11 @@ gulp.task('build', function () {
             ' * Copyright <%= new Date().getFullYear() %>, <%= author.name %>',
             ' */\n\n'
           ].join('\n'), pkg))
+        .pipe(gulp.dest('dist/'))
+        .pipe(rename('featureFlags.min.js'))
+        .pipe(ngmin())
+        .pipe(uglify({preserveComments: 'some'}))
+        .pipe(gulp.dest('dist/'))
         .pipe(gulp.dest('demo/scripts'));
 });
 
