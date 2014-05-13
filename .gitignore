@@ -1,2 +1,3 @@
 node_modules
 test/coverage
+demo/scripts/featureFlags.min.js

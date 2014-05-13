@@ -1,6 +1,7 @@
 {
   "name": "angular-feature-flags",
-  "version": "0.2.0",
+  "title": "Angular Feature Flags",
+  "version": "0.3.0",
   "description": "Feature Flag module for Angular JS apps",
   "keywords": [
     "angular",
@@ -20,15 +21,24 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "gulp test"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-connect": "~0.4.1",
-    "grunt-karma": "~0.6.2",
-    "grunt-open": "~0.2.2",
-    "grunt-contrib-jshint": "~0.8.0",
+    "gulp": "^3.6.0",
+    "gulp-connect": "^2.0.5",
+    "gulp-jshint": "^1.5.3",
     "jshint-stylish": "~0.1.5",
-    "karma-coverage": "~0.1.5"
+    "gulp-karma": "0.0.4",
+    "karma": "^0.12.9",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-coverage": "~0.1.5",
+    "gulp-ngmin": "^0.2.0",
+    "opn": "^0.1.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.2.1",
+    "gulp-header": "^1.0.2",
+    "gulp-wrap": "^0.3.0",
+    "gulp-concat": "^2.2.0"
   }
 }
