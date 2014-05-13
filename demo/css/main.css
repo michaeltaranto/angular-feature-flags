@@ -16,16 +16,15 @@ h2 { margin-top: 0; margin-bottom: 10px; font-size: 14px; font-weight: normal; }
 .toggle .main { left: 700px; opacity: 0.4; }
 .toggle .flagContainer { left: 0; }
 
-.flag { padding: 10px 30px; transition: all 0.2s linear; }
-.flag:hover { background-color: #FAFAFA; cursor: pointer; }
-.flag h2 { float: left; }
-.flag a { float: right; margin: 0; }
-.flag .hint { color: #AAAAAA; clear: both; margin: 0 20px; }
-.flag.on { background-color: #E7FDE2; }
-.flag.off { background-color: #FFE8E8; }
-
 .panel { width: 70%; background-color: #8EC16D; text-align: center; margin: 20px auto; font-size: 17pt; padding: 20px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); font-family: sans-serif; color: #FFF; }
 .panel:hover { cursor: pointer; background-color: #9DC980; }
 .panel.selected { background-color: #EE7777; }
 
 .toggles { height: 20px; width: 20px; background: transparent url('../images/icon.png') no-repeat scroll 0 0; cursor: pointer; }
+
+.feature-flags {}
+.feature-flags .feature-flags-flag { padding: 10px 30px; transition: all 0.2s linear; }
+.feature-flags .feature-flags-name { font-size: 1.2em; float:left; }
+.feature-flags .feature-flags-switch { float: right; padding: 2px 10px; cursor: pointer; }
+.feature-flags .feature-flags-switch.active { font-weight: bold; border: 1px solid currentcolor; padding: 1px 9px; }
+.feature-flags .feature-flags-desc { color: #AAAAAA; clear: both; margin: 0 20px; }

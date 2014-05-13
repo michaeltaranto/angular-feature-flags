@@ -4,10 +4,10 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="vendor/angular.min.js"></script>
     <script>
-        angular.module("my-app", [ "feature-flags" ]);
+        angular.module('my-app', [ 'feature-flags' ]);
     </script>
     <script src="scripts/directives.js"></script>
-    <script src="scripts/flagsService.js"></script>
+    <script src="scripts/featureFlags.min.js"></script>
 </head>
 <body ng-app="my-app" ng-class="{ toggle: showFlags }" ng-cloak>
     <div class="toggles" ng-click="showFlags=!showFlags"></div>
@@ -18,6 +18,6 @@
         <div user-profile feature-flag="userProfile"></div>
         <div settings feature-flag="settings"></div>
     </div>
-    <div switches></div>
+    <div class="flagContainer" override-panel></div>
 </body>
 </html>
