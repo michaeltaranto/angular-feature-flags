@@ -24,7 +24,7 @@ You can then add the **override** panel to your app and turn individual features
 The flag data that drives the feature flag service is a json format. Below is an example:
 ```json
 [
-    { "key": "...", "active": "...", name": "...", "description": "..." },
+    { "key": "...", "active": "...", "name": "...", "description": "..." },
     ...
 ]
 ```
