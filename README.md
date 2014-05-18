@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/mjt01/angular-feature-flags/badge.png)](https://coveralls.io/r/mjt01/angular-feature-flags)
 ## angular-feature-flags
 
-An AngularJS module that allows you to control when you release new features in your app by putting them behind feature falgs/switches.
+An AngularJS module that allows you to control when you release new features in your app by putting them behind feature flags/switches.
 
 
 ### The idea
