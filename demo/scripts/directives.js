@@ -30,4 +30,7 @@ angular.module("my-app")
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Settings</div>',
             replace: true
         };
+    })
+    .run(function(flags, $http) {
+        flags.set($http.get('/data/flags.json'));
     });

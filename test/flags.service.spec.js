@@ -4,31 +4,55 @@
     describe('Service: flags', function() {
         var flagsService,
             overrideService,
-            $http;
+            $rootScope,
+            $q,
+            $http,
+            $httpBackend;
 
         beforeEach(module('feature-flags'));
 
-        beforeEach(inject(function(flags, override, $httpBackend) {
+        beforeEach(inject(function(flags, override, _$rootScope_, _$q_, _$http_, _$httpBackend_) {
             flagsService = flags;
             overrideService = override;
-            $http = $httpBackend;
+            $rootScope = _$rootScope_;
+            $q = _$q_;
+            $http = _$http_;
+            $httpBackend = _$httpBackend_;
         }));
 
-        describe('when I retrieve the list of flags', function() {
+        describe('when I retrieve the list of flags using an HttpPromise', function() {
             var flags = [
                 { active: true, key: 'FLAG_KEY' },
                 { active: false, key: 'FLAG_KEY_2' }
             ];
 
             beforeEach(function() {
-                $http.when('GET', 'data/flags.json').respond(flags);
-                flagsService.fetch();
-                $http.flush();
+                $httpBackend.when('GET', 'data/flags.json').respond(flags);
+                flagsService.set($http.get('data/flags.json'));
+                $httpBackend.flush();
             });
 
             afterEach(function() {
-                $http.verifyNoOutstandingExpectation();
-                $http.verifyNoOutstandingRequest();
+                $httpBackend.verifyNoOutstandingExpectation();
+                $httpBackend.verifyNoOutstandingRequest();
+            });
+
+            it('should return all available flags', function() {
+                expect(flagsService.get()).toEqual(flags);
+            });
+        });
+
+        describe('when I retrieve the list of flags using a regular promise', function() {
+            var flags = [
+                { active: true, key: 'FLAG_KEY' },
+                { active: false, key: 'FLAG_KEY_2' }
+            ];
+
+            beforeEach(function() {
+                var deferred = $q.defer();
+                deferred.resolve(flags);
+                flagsService.set(deferred.promise);
+                $rootScope.$digest();
             });
 
             it('should return all available flags', function() {
@@ -75,9 +99,9 @@
                 flag = { active: originalFlagValue, key: 'FLAG_KEY' };
 
             beforeEach(function() {
-                $http.when('GET', 'data/flags.json').respond([ flag ]);
-                flagsService.fetch();
-                $http.flush();
+                $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
+                flagsService.set($http.get('data/flags.json'));
+                $httpBackend.flush();
 
                 spyOn(overrideService, 'set');
                 flagsService.disable(flag);
@@ -124,14 +148,14 @@
                 var flag = { active: false, key: 'FLAG_KEY' };
 
                 beforeEach(function() {
-                    $http.when('GET', 'data/flags.json').respond([ flag ]);
-                    flagsService.fetch();
-                    $http.flush();
+                    $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
+                    flagsService.set($http.get('data/flags.json'));
+                    $httpBackend.flush();
                 });
 
                 afterEach(function() {
-                    $http.verifyNoOutstandingExpectation();
-                    $http.verifyNoOutstandingRequest();
+                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.verifyNoOutstandingRequest();
                 });
                 
                 describe('and there is a local override to turn it on', function() {
@@ -160,14 +184,14 @@
                 var flag = { active: true, key: 'FLAG_KEY' };
 
                 beforeEach(function() {
-                    $http.when('GET', 'data/flags.json').respond([ flag ]);
-                    flagsService.fetch();
-                    $http.flush();
+                    $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
+                    flagsService.set($http.get('data/flags.json'));
+                    $httpBackend.flush();
                 });
 
                 afterEach(function() {
-                    $http.verifyNoOutstandingExpectation();
-                    $http.verifyNoOutstandingRequest();
+                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.verifyNoOutstandingRequest();
                 });
                 
                 describe('and there is a local override to turn it off', function() {
