@@ -5,11 +5,7 @@
  */
 
 (function(){
-angular.module('feature-flags', [])
-    .value('FLAGS_URL', 'data/flags.json')
-    .run(function(flags) {
-        flags.fetch();
-    });
+angular.module('feature-flags', []);
 angular.module('feature-flags').directive('featureFlag', function(flags) {
     return {
         restrict: 'A',
@@ -34,7 +30,7 @@ angular.module('feature-flags').directive('featureFlag', function(flags) {
         }
     };
 });
-angular.module('feature-flags').service('flags', function($http, FLAGS_URL, override) {
+angular.module('feature-flags').service('flags', function($http, override) {
         var serverFlagCache = {},
             flags = [],
 
@@ -42,15 +38,16 @@ angular.module('feature-flags').service('flags', function($http, FLAGS_URL, over
                 return flags;
             },
 
-            fetch = function() {
-                return $http.get(FLAGS_URL)
-                            .success(function(response) {
-                                response.forEach(function(flag) {
-                                    serverFlagCache[flag.key] = flag.active;
-                                    flag.active = isOn(flag.key);
-                                });
-                                angular.copy(response, flags);
-                            });
+            set = function(promise) {
+                var method = promise.success || promise.then;
+
+                return method.call(promise, function(response) {
+                        response.forEach(function(flag) {
+                            serverFlagCache[flag.key] = flag.active;
+                            flag.active = isOn(flag.key);
+                        });
+                        angular.copy(response, flags);
+                    });
             },
 
             enable = function(flag) {
@@ -77,7 +74,7 @@ angular.module('feature-flags').service('flags', function($http, FLAGS_URL, over
             };
 
         return {
-            fetch: fetch,
+            set: set,
             get: get,
             enable: enable,
             disable: disable,
