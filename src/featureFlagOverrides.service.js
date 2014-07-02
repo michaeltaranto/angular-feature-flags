@@ -1,4 +1,4 @@
-angular.module('feature-flags').service('override', function($rootElement) {
+angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
     var appName = $rootElement.attr('ng-app');
     return {
         isPresent: function(key) {

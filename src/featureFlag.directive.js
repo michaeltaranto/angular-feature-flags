@@ -1,4 +1,4 @@
-angular.module('feature-flags').directive('featureFlag', function(flags) {
+angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
     return {
         restrict: 'A',
         link: function postLink($scope, element, attrs) {
@@ -11,7 +11,7 @@ angular.module('feature-flags').directive('featureFlag', function(flags) {
                 };
 
             $scope.$watch(function() {
-                return flags.isOn(attrs.featureFlag);
+                return featureFlags.isOn(attrs.featureFlag);
             }, function(isEnabled) {
                 if (isEnabled === false) {
                     swap(element[0], placeholder);

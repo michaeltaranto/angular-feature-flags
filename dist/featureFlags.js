@@ -6,7 +6,7 @@
 
 (function(){
 angular.module('feature-flags', []);
-angular.module('feature-flags').directive('featureFlag', function(flags) {
+angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
     return {
         restrict: 'A',
         link: function postLink($scope, element, attrs) {
@@ -19,7 +19,7 @@ angular.module('feature-flags').directive('featureFlag', function(flags) {
                 };
 
             $scope.$watch(function() {
-                return flags.isOn(attrs.featureFlag);
+                return featureFlags.isOn(attrs.featureFlag);
             }, function(isEnabled) {
                 if (isEnabled === false) {
                     swap(element[0], placeholder);
@@ -30,7 +30,49 @@ angular.module('feature-flags').directive('featureFlag', function(flags) {
         }
     };
 });
-angular.module('feature-flags').service('flags', function($http, override) {
+angular.module('feature-flags').directive('featureFlagOverrides', function(featureFlags) {
+    return {
+        restrict: 'A',
+        link: function postLink($scope) {
+            $scope.flags = featureFlags.get();
+
+            $scope.isOn = featureFlags.isOn;
+            $scope.isOverridden = featureFlags.isOverridden;
+            $scope.enable = featureFlags.enable;
+            $scope.disable = featureFlags.disable;
+            $scope.reset = featureFlags.reset;
+        },
+        template: '<div class="feature-flags">' +
+                  '    <h1>Feature Flags</h1>'+
+                  '    <div class="feature-flags-flag" ng-repeat="flag in flags">'+
+                  '        <div class="feature-flags-name">{{flag.name}}</div>'+
+                  '        <div class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>'+
+                  '        <div class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>'+
+                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT</div>'+
+                  '        <div class="feature-flags-desc">{{flag.description}}</div>'+
+                  '    </div>'+
+                  '</div>',
+        replace: true
+    };
+});
+angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
+    var appName = $rootElement.attr('ng-app');
+    return {
+        isPresent: function(key) {
+            return localStorage.getItem(appName + '.' + key) !== null;
+        },
+        get: function(key) {
+            return localStorage.getItem(appName + '.' + key);
+        },
+        set: function(key, value) {
+            localStorage.setItem(appName + '.' + key, value);
+        },
+        remove: function(key) {
+            localStorage.removeItem(appName + '.' + key);
+        }
+    };
+});
+angular.module('feature-flags').service('featureFlags', function($http, featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
@@ -52,25 +94,25 @@ angular.module('feature-flags').service('flags', function($http, override) {
 
             enable = function(flag) {
                 flag.active = true;
-                override.set(flag.key, true);
+                featureFlagOverrides.set(flag.key, true);
             },
 
             disable = function(flag) {
                 flag.active = false;
-                override.set(flag.key, false);
+                featureFlagOverrides.set(flag.key, false);
             },
 
             reset = function(flag) {
                 flag.active = serverFlagCache[flag.key];
-                override.remove(flag.key);
+                featureFlagOverrides.remove(flag.key);
             },
 
             isOverridden = function(key) {
-                return override.isPresent(key);
+                return featureFlagOverrides.isPresent(key);
             },
 
             isOn = function(key) {
-                return isOverridden(key) ? override.get(key) == 'true' : serverFlagCache[key];
+                return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : serverFlagCache[key];
             };
 
         return {
@@ -83,46 +125,4 @@ angular.module('feature-flags').service('flags', function($http, override) {
             isOverridden: isOverridden
         };
     });
-angular.module('feature-flags').service('override', function($rootElement) {
-    var appName = $rootElement.attr('ng-app');
-    return {
-        isPresent: function(key) {
-            return localStorage.getItem(appName + '.' + key) !== null;
-        },
-        get: function(key) {
-            return localStorage.getItem(appName + '.' + key);
-        },
-        set: function(key, value) {
-            localStorage.setItem(appName + '.' + key, value);
-        },
-        remove: function(key) {
-            localStorage.removeItem(appName + '.' + key);
-        }
-    };
-});
-angular.module('feature-flags').directive('overridePanel', function(flags) {
-    return {
-        restrict: 'A',
-        link: function postLink($scope) {
-            $scope.flags = flags.get();
-
-            $scope.isOn = flags.isOn;
-            $scope.isOverridden = flags.isOverridden;
-            $scope.enable = flags.enable;
-            $scope.disable = flags.disable;
-            $scope.reset = flags.reset;
-        },
-        template: '<div class="feature-flags">' +
-                  '    <h1>Feature Flags</h1>'+
-                  '    <div class="feature-flags-flag" ng-repeat="flag in flags">'+
-                  '        <div class="feature-flags-name">{{flag.name}}</div>'+
-                  '        <div class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>'+
-                  '        <div class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>'+
-                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT</div>'+
-                  '        <div class="feature-flags-desc">{{flag.description}}</div>'+
-                  '    </div>'+
-                  '</div>',
-        replace: true
-    };
-});
 }());

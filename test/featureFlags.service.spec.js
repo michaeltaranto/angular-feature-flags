@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    describe('Service: flags', function() {
-        var flagsService,
-            overrideService,
+    describe('Service: featureFlags', function() {
+        var featureFlags,
+            featureFlagOverrides,
             $rootScope,
             $q,
             $http,
@@ -11,9 +11,9 @@
 
         beforeEach(module('feature-flags'));
 
-        beforeEach(inject(function(flags, override, _$rootScope_, _$q_, _$http_, _$httpBackend_) {
-            flagsService = flags;
-            overrideService = override;
+        beforeEach(inject(function(_featureFlags_, _featureFlagOverrides_, _$rootScope_, _$q_, _$http_, _$httpBackend_) {
+            featureFlags = _featureFlags_;
+            featureFlagOverrides = _featureFlagOverrides_;
             $rootScope = _$rootScope_;
             $q = _$q_;
             $http = _$http_;
@@ -28,7 +28,7 @@
 
             beforeEach(function() {
                 $httpBackend.when('GET', 'data/flags.json').respond(flags);
-                flagsService.set($http.get('data/flags.json'));
+                featureFlags.set($http.get('data/flags.json'));
                 $httpBackend.flush();
             });
 
@@ -38,7 +38,7 @@
             });
 
             it('should return all available flags', function() {
-                expect(flagsService.get()).toEqual(flags);
+                expect(featureFlags.get()).toEqual(flags);
             });
         });
 
@@ -51,12 +51,12 @@
             beforeEach(function() {
                 var deferred = $q.defer();
                 deferred.resolve(flags);
-                flagsService.set(deferred.promise);
+                featureFlags.set(deferred.promise);
                 $rootScope.$digest();
             });
 
             it('should return all available flags', function() {
-                expect(flagsService.get()).toEqual(flags);
+                expect(featureFlags.get()).toEqual(flags);
             });
         });
 
@@ -64,12 +64,12 @@
             var flag = { active: null, key: 'FLAG_KEY' };
 
             beforeEach(function() {
-                spyOn(overrideService, 'set');
-                flagsService.enable(flag);
+                spyOn(featureFlagOverrides, 'set');
+                featureFlags.enable(flag);
             });
 
             it('should set the flag with the correct name and value', function() {
-                expect(overrideService.set).toHaveBeenCalledWith(flag.key, true);
+                expect(featureFlagOverrides.set).toHaveBeenCalledWith(flag.key, true);
             });
 
             it('should set the flag as active', function() {
@@ -81,12 +81,12 @@
             var flag = { active: null, key: 'FLAG_KEY' };
 
             beforeEach(function() {
-                spyOn(overrideService, 'set');
-                flagsService.disable(flag);
+                spyOn(featureFlagOverrides, 'set');
+                featureFlags.disable(flag);
             });
 
             it('should set the flag with the correct name and value', function() {
-                expect(overrideService.set).toHaveBeenCalledWith(flag.key, false);
+                expect(featureFlagOverrides.set).toHaveBeenCalledWith(flag.key, false);
             });
 
             it('should set the flag as inactive', function() {
@@ -100,18 +100,18 @@
 
             beforeEach(function() {
                 $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
-                flagsService.set($http.get('data/flags.json'));
+                featureFlags.set($http.get('data/flags.json'));
                 $httpBackend.flush();
 
-                spyOn(overrideService, 'set');
-                flagsService.disable(flag);
+                spyOn(featureFlagOverrides, 'set');
+                featureFlags.disable(flag);
 
-                spyOn(overrideService, 'remove');
-                flagsService.reset(flag);
+                spyOn(featureFlagOverrides, 'remove');
+                featureFlags.reset(flag);
             });
 
             it('should remove the flag', function() {
-                expect(overrideService.remove).toHaveBeenCalledWith(flag.key);
+                expect(featureFlagOverrides.remove).toHaveBeenCalledWith(flag.key);
             });
 
             it('should reset the flag to the default value', function() {
@@ -124,21 +124,21 @@
 
             describe('if there is', function() {
                 beforeEach(function() {
-                    spyOn(overrideService, 'isPresent').andReturn(true);
+                    spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
                 });
 
                 it('should return true when there is', function() {
-                    expect(flagsService.isOverridden(flag.key)).toBe(true);
+                    expect(featureFlags.isOverridden(flag.key)).toBe(true);
                 });
             });
             
             describe('if there is not', function() {
                 beforeEach(function() {
-                    spyOn(overrideService, 'isPresent').andReturn(false);
+                    spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
                 });
 
                 it('should return true when there is', function() {
-                    expect(flagsService.isOverridden(flag.key)).toBe(false);
+                    expect(featureFlags.isOverridden(flag.key)).toBe(false);
                 });
             });
         });
@@ -149,7 +149,7 @@
 
                 beforeEach(function() {
                     $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
-                    flagsService.set($http.get('data/flags.json'));
+                    featureFlags.set($http.get('data/flags.json'));
                     $httpBackend.flush();
                 });
 
@@ -160,22 +160,22 @@
                 
                 describe('and there is a local override to turn it on', function() {
                     beforeEach(function() {
-                        spyOn(overrideService, 'isPresent').andReturn(true);
-                        spyOn(overrideService, 'get').andReturn('true');
+                        spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
+                        spyOn(featureFlagOverrides, 'get').andReturn('true');
                     });
                     
                     it('should report the feature as being on', function() {
-                        expect(flagsService.isOn(flag.key)).toBe(true);
+                        expect(featureFlags.isOn(flag.key)).toBe(true);
                     });
                 });
 
                 describe('and there is no local override to turn it on', function() {
                     beforeEach(function() {
-                        spyOn(overrideService, 'isPresent').andReturn(false);
+                        spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
                     });
 
                     it('should report the feature as being off', function() {
-                        expect(flagsService.isOn(flag.key)).toBe(flag.active);
+                        expect(featureFlags.isOn(flag.key)).toBe(flag.active);
                     });
                 });
             });
@@ -185,7 +185,7 @@
 
                 beforeEach(function() {
                     $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
-                    flagsService.set($http.get('data/flags.json'));
+                    featureFlags.set($http.get('data/flags.json'));
                     $httpBackend.flush();
                 });
 
@@ -196,22 +196,22 @@
                 
                 describe('and there is a local override to turn it off', function() {
                     beforeEach(function() {
-                        spyOn(overrideService, 'isPresent').andReturn(true);
-                        spyOn(overrideService, 'get').andReturn('false');
+                        spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
+                        spyOn(featureFlagOverrides, 'get').andReturn('false');
                     });
 
                     it('should report the feature as being off', function() {
-                        expect(flagsService.isOn(flag.key)).toBe(false);
+                        expect(featureFlags.isOn(flag.key)).toBe(false);
                     });
                 });
 
                 describe('and there is no local override to turn it off', function() {
                     beforeEach(function() {
-                        spyOn(overrideService, 'isPresent').andReturn(false);
+                        spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
                     });
 
                     it('should report the feature as being on', function() {
-                        expect(flagsService.isOn(flag.key)).toBe(true);
+                        expect(featureFlags.isOn(flag.key)).toBe(true);
                     });
                 });
             });

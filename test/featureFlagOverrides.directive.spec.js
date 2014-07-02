@@ -1,34 +1,28 @@
 (function () {
     'use strict';
 
-    describe('Directive: OverridePanel', function() {
-        var $scope, container, flags;
+    describe('Directive: featureFlagsOverrides', function() {
+        var $scope, container, featureFlags;
 
-        beforeEach(module('feature-flags', function($provide) {
-            return $provide.decorator('flags', function($delegate) {
-                $delegate.fetch = angular.noop;
-                
-                return $delegate;
-            });
-        }));
+        beforeEach(module('feature-flags'));
 
-        beforeEach(inject(function($rootScope, $compile, _flags_) {
+        beforeEach(inject(function($rootScope, $compile, _featureFlags_) {
             $scope = $rootScope.$new();
-            flags = _flags_;
-            spyOn(flags, 'isOn');
-            spyOn(flags, 'isOverridden');
-            spyOn(flags, 'enable');
-            spyOn(flags, 'disable');
-            spyOn(flags, 'reset');
-            spyOn(flags, 'get').andReturn('FLAGS_ARRAY');
+            featureFlags = _featureFlags_;
+            spyOn(featureFlags, 'isOn');
+            spyOn(featureFlags, 'isOverridden');
+            spyOn(featureFlags, 'enable');
+            spyOn(featureFlags, 'disable');
+            spyOn(featureFlags, 'reset');
+            spyOn(featureFlags, 'get').andReturn('FLAGS_ARRAY');
             
-            container = angular.element('<div override-panel></div>');
+            container = angular.element('<div feature-flag-overrides></div>');
             $compile(container)($scope);
         }));
 
         describe('override panel', function() {
             it('should get the flags', function() {
-                expect(flags.get).toHaveBeenCalled();
+                expect(featureFlags.get).toHaveBeenCalled();
             });
 
             it('should set them on scope', function() {
@@ -42,7 +36,7 @@
             });
             
             it('should check if a flag is on', function() {
-                expect(flags.isOn).toHaveBeenCalled();
+                expect(featureFlags.isOn).toHaveBeenCalled();
             });
         });
 
@@ -52,7 +46,7 @@
             });
 
             it('should check if a flag has been overridden', function() {
-                expect(flags.isOverridden).toHaveBeenCalled();
+                expect(featureFlags.isOverridden).toHaveBeenCalled();
             });
         });
 
@@ -62,7 +56,7 @@
             });
 
             it('should enable the flag', function() {
-                expect(flags.enable).toHaveBeenCalled();
+                expect(featureFlags.enable).toHaveBeenCalled();
             });
         });
 
@@ -72,7 +66,7 @@
             });
 
             it('should disable the flag', function() {
-                expect(flags.disable).toHaveBeenCalled();
+                expect(featureFlags.disable).toHaveBeenCalled();
             });
         });
 
@@ -82,7 +76,7 @@
             });
 
             it('should reset the flag override', function() {
-                expect(flags.reset).toHaveBeenCalled();
+                expect(featureFlags.reset).toHaveBeenCalled();
             });
         });
     });
