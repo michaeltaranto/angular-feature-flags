@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    describe('Service: Override', function() {
+    describe('Service: featureFlagOverrides', function() {
         var service, appName = '';
 
         beforeEach(module('feature-flags'));
 
-        beforeEach(inject(function(override) {
-            service = override;
+        beforeEach(inject(function(featureFlagOverrides) {
+            service = featureFlagOverrides;
         }));
 
         describe('when I set an override', function() {

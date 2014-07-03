@@ -4,26 +4,20 @@
     describe('Directive: FeatureFlag', function() {
         var $scope, container, featureEl, flagCheck;
 
-        beforeEach(module('feature-flags', function($provide) {
-            return $provide.decorator('flags', function($delegate) {
-                $delegate.fetch = angular.noop;
-                
-                return $delegate;
-            });
-        }));
+        beforeEach(module('feature-flags'));
 
-        beforeEach(inject(function($rootScope, $compile, flags) {
+        beforeEach(inject(function($rootScope, $compile, featureFlags) {
             $scope = $rootScope.$new();
             featureEl = angular.element('<div feature-flag="FLAG_NAME"></div>');
             container = angular.element('<div></div>');
             container.append(featureEl);
-            flagCheck = spyOn(flags, 'isOn');
+            flagCheck = spyOn(featureFlags, 'isOn');
             $compile(container)($scope);
         }));
 
         describe('when the feature flag', function() {
             describe('is on', function() {
-                beforeEach(inject(function(flags) {
+                beforeEach(inject(function(featureFlags) {
                     flagCheck.andReturn(true);
                     $scope.$digest();
                 }));
@@ -34,7 +28,7 @@
             });
 
             describe('if off', function() {
-                beforeEach(inject(function(flags) {
+                beforeEach(inject(function(featureFlags) {
                     flagCheck.andReturn(false);
                     $scope.$digest();
                 }));
@@ -48,7 +42,7 @@
         });        
 
         describe('when i toggle it off and on again', function() {
-            beforeEach(inject(function(flags) {
+            beforeEach(inject(function(featureFlags) {
                 flagCheck.andReturn(false);
                 $scope.$digest();
                 flagCheck.andReturn(true);

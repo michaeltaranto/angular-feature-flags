@@ -1,14 +1,14 @@
-angular.module('feature-flags').directive('overridePanel', function(flags) {
+angular.module('feature-flags').directive('featureFlagOverrides', function(featureFlags) {
     return {
         restrict: 'A',
         link: function postLink($scope) {
-            $scope.flags = flags.get();
+            $scope.flags = featureFlags.get();
 
-            $scope.isOn = flags.isOn;
-            $scope.isOverridden = flags.isOverridden;
-            $scope.enable = flags.enable;
-            $scope.disable = flags.disable;
-            $scope.reset = flags.reset;
+            $scope.isOn = featureFlags.isOn;
+            $scope.isOverridden = featureFlags.isOverridden;
+            $scope.enable = featureFlags.enable;
+            $scope.disable = featureFlags.disable;
+            $scope.reset = featureFlags.reset;
         },
         template: '<div class="feature-flags">' +
                   '    <h1>Feature Flags</h1>'+

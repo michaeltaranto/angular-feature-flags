@@ -1,4 +1,4 @@
-angular.module('feature-flags').service('flags', function($http, override) {
+angular.module('feature-flags').service('featureFlags', function($http, featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
@@ -20,25 +20,25 @@ angular.module('feature-flags').service('flags', function($http, override) {
 
             enable = function(flag) {
                 flag.active = true;
-                override.set(flag.key, true);
+                featureFlagOverrides.set(flag.key, true);
             },
 
             disable = function(flag) {
                 flag.active = false;
-                override.set(flag.key, false);
+                featureFlagOverrides.set(flag.key, false);
             },
 
             reset = function(flag) {
                 flag.active = serverFlagCache[flag.key];
-                override.remove(flag.key);
+                featureFlagOverrides.remove(flag.key);
             },
 
             isOverridden = function(key) {
-                return override.isPresent(key);
+                return featureFlagOverrides.isPresent(key);
             },
 
             isOn = function(key) {
-                return isOverridden(key) ? override.get(key) == 'true' : serverFlagCache[key];
+                return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : serverFlagCache[key];
             };
 
         return {

@@ -50,13 +50,13 @@ The flag data that drives the feature flag service is a json format. Below is an
 
 ### Setting flag data
 
-Flag data can be set via the `flags` service using the `set` method. This currently accepts either an [HttpPromise](https://docs.angularjs.org/api/ng/service/$http) or a regular [Promise](https://docs.angularjs.org/api/ng/service/$q). The promise must resolve to a valid collection of (flag data)[#flag-data].
+Flag data can be set via the `featureFlags` service using the `set` method. This currently accepts either an [HttpPromise](https://docs.angularjs.org/api/ng/service/$http) or a regular [Promise](https://docs.angularjs.org/api/ng/service/$q). The promise must resolve to a valid collection of (flag data)[#flag-data].
 
 For example, if you were loading your flag data from a remote JSON file:
 
 ```js
-myApp.run(function(flags, $http) {
-  flags.set($http.get('/data/flags.json'));
+myApp.run(function(featureFlags, $http) {
+  featureFlags.set($http.get('/data/flags.json'));
 });
 ```
 
