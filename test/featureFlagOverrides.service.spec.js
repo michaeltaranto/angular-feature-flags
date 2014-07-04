@@ -17,7 +17,7 @@
             });
 
             it('should save the value', function() {
-                expect(localStorage.setItem).toHaveBeenCalledWith(appName + '.' + 'FLAG_KEY', 'VALUE');
+                expect(localStorage.setItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY', 'VALUE');
             });
         });
 
@@ -28,7 +28,7 @@
             });
 
             it('should get the value', function() {
-                expect(localStorage.getItem).toHaveBeenCalledWith(appName + '.' + 'FLAG_KEY');
+                expect(localStorage.getItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY');
             });
         });
 
@@ -39,7 +39,7 @@
             });
 
             it('should delete the value', function() {
-                expect(localStorage.removeItem).toHaveBeenCalledWith(appName + '.' + 'FLAG_KEY');
+                expect(localStorage.removeItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY');
             });
         });
 
@@ -62,6 +62,31 @@
                 it('should return false if there is no value', function() {
                     expect(service.isPresent('FLAG_KEY')).toBe(false);
                 });
+            });
+        });
+
+        describe('when I have a series of overrides and then clear them', function() {
+            beforeEach(function() {
+                spyOn(localStorage, 'removeItem');
+                localStorage.setItem('someOtherData');
+                service.set('FLAG_KEY_1', 'VALUE');
+                service.set('FLAG_KEY_2', 'VALUE');
+                service.set('FLAG_KEY_3', 'VALUE');
+                service.reset();
+            });
+
+            afterEach(function() {
+                localStorage.clear();
+            });
+
+            it('should remove all feature flags from local storage', function() {
+                expect(localStorage.removeItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY_1');
+                expect(localStorage.removeItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY_2');
+                expect(localStorage.removeItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY_3');
+            });
+
+            it('should not remove unrelated local storage items', function() {
+                expect(localStorage.removeItem).not.toHaveBeenCalledWith('someOtherData');
             });
         });
     });
