@@ -21,6 +21,23 @@
             });
         });
 
+        describe('when I set a hash of overrides', function() {
+            beforeEach(function() {
+                spyOn(localStorage, 'setItem');
+                service.set({
+                    'FLAG_KEY_1': 'VALUE_1',
+                    'FLAG_KEY_2': 'VALUE_2',
+                    'FLAG_KEY_3': 'VALUE_3'
+                });
+            });
+
+            it('should save the values', function() {
+                expect(localStorage.setItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY_1', 'VALUE_1');
+                expect(localStorage.setItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY_2', 'VALUE_2');
+                expect(localStorage.setItem).toHaveBeenCalledWith('featureFlags.' + appName + '.' + 'FLAG_KEY_3', 'VALUE_3');
+            });
+        });
+
         describe('when I get an override', function() {
             beforeEach(function() {
                 spyOn(localStorage, 'getItem');
