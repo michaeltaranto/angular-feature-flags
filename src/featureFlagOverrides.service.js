@@ -7,7 +7,7 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         },
 
         isPrefixedKey = function(key) {
-            return key.indexOf(keyPrefix) === 0
+            return key.indexOf(keyPrefix) === 0;
         },
 
         set = function(value, flagName) {
