@@ -2,56 +2,57 @@
     'use strict';
 
     describe('Directive: FeatureFlag', function() {
-        var $scope, container, featureEl, flagCheck;
+        var $scope, parentElement, featureElement, flagCheck;
 
         beforeEach(module('feature-flags'));
 
         beforeEach(inject(function($rootScope, $compile, featureFlags) {
-            $scope = $rootScope.$new();
-            featureEl = angular.element('<div feature-flag="FLAG_NAME"></div>');
-            container = angular.element('<div></div>');
-            container.append(featureEl);
+            featureElement = angular.element('<div feature-flag="FLAG_NAME"></div>')[0];
+            parentElement = angular.element('<div></div>').append(featureElement)[0];
+            
             flagCheck = spyOn(featureFlags, 'isOn');
-            $compile(container)($scope);
+
+            $scope = $rootScope.$new();
+            $compile(parentElement)($scope);
         }));
 
         describe('when the feature flag', function() {
             describe('is on', function() {
-                beforeEach(inject(function(featureFlags) {
+                beforeEach(function() {
                     flagCheck.andReturn(true);
                     $scope.$digest();
-                }));
+                });
 
                 it('should leave the element in the dom', function() {
-                    expect(container.children()[0]).toBe(featureEl[0]);
+                    expect(parentElement.childNodes[0].outerHtml).toEqual(featureElement.outerHtml);
                 });
             });
 
             describe('if off', function() {
-                beforeEach(inject(function(featureFlags) {
+                beforeEach(function() {
                     flagCheck.andReturn(false);
                     $scope.$digest();
-                }));
+                });
                 
                 it('should swap a placeholder comment into its place', function() {
-                    expect(container[0].childNodes.length).toBe(1);
-                    expect(container[0].childNodes[0].nodeName).toContain('comment');
-                    expect(container[0].childNodes[0].textContent).toContain('FLAG_NAME');
+                    expect(parentElement.childNodes.length).toBe(1);
+                    expect(parentElement.childNodes[0].nodeName).toContain('comment');
+                    expect(parentElement.childNodes[0].textContent).toContain('FLAG_NAME is off');
                 });
             });
         });        
 
-        describe('when i toggle it off and on again', function() {
-            beforeEach(inject(function(featureFlags) {
-                flagCheck.andReturn(false);
-                $scope.$digest();
+        describe('when i toggle it on and off again', function() {
+            beforeEach(function() {
                 flagCheck.andReturn(true);
                 $scope.$digest();
-            }));
+                flagCheck.andReturn(false);
+                $scope.$digest();
+            });
 
-            it('should replace the placeholder comment with the element', function() {
-                expect(container.children().length).toBe(1);
-                expect(container.children()[0]).toBe(featureEl[0]);
+            it('should replace the element with the placeholder comment', function() {
+                expect(parentElement.childNodes.length).toBe(1);
+                expect(parentElement.childNodes[0].outerHtml).toBe(featureElement.outerHtml);
             });
         });
     });

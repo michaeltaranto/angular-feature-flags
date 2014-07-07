@@ -1,24 +1,36 @@
 angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
     return {
+        transclude: 'element',
+        priority: 600,
+        terminal: true,
         restrict: 'A',
-        link: function postLink($scope, element, attrs) {
-            var placeholder = document.createComment(' featureFlag: ' + attrs.featureFlag + ' '),
-                swap = function(oldEl, newEl) {
-                    var parent = oldEl.parentNode;
-                    if(parent) {
-                        parent.replaceChild(newEl, oldEl);
-                    }
-                };
+        $$tlb: true,
+        compile: function featureFlagCompile(tElement, attrs) {
+            tElement[0].textContent = ' featureFlag: ' + attrs.featureFlag + ' is off ';
 
-            $scope.$watch(function() {
-                return featureFlags.isOn(attrs.featureFlag);
-            }, function(isEnabled) {
-                if (isEnabled === false) {
-                    swap(element[0], placeholder);
-                } else {
-                    swap(placeholder, element[0]);
-                }
-            });
+            return function featureFlagPostLink($scope, element, attrs, ctrl, $transclude) {
+                var featureEl, childScope;
+                $scope.$watch(function featureFlagWatcher() {
+                        return featureFlags.isOn(attrs.featureFlag);
+                }, function featureFlagChanged(isEnabled) {
+                    if (isEnabled) {
+                        childScope = $scope.$new();
+                        $transclude(childScope, function(clone) {
+                            featureEl = clone;
+                            element.after(featureEl).remove();
+                        });
+                    } else {
+                        if(childScope) {
+                            childScope.$destroy();
+                            childScope = null;
+                        }
+                        if(featureEl) {
+                            featureEl.after(element).remove();
+                            featureEl = null;
+                        }
+                    }
+                });
+            };
         }
     };
 });

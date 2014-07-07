@@ -113,13 +113,16 @@ gulp.task('build', function () {
             '/*!',
             ' * <%= title %> v<%= version %>',
             ' *',
-            ' * Copyright <%= new Date().getFullYear() %>, <%= author.name %>',
+            ' * © <%= new Date().getFullYear() %>, <%= author.name %>',
             ' */\n\n'
           ].join('\n'), pkg))
         .pipe(gulp.dest('dist/'))
         .pipe(rename('featureFlags.min.js'))
         .pipe(ngmin())
-        .pipe(uglify({preserveComments: 'some'}))
+        .pipe(uglify())
+        .pipe(header([
+            '/*! <%= title %> v<%= version %> © <%= new Date().getFullYear() %> <%= author.name %> */\n'
+          ].join(''), pkg))
         .pipe(gulp.dest('dist/'))
         .pipe(gulp.dest('demo/scripts'));
 });

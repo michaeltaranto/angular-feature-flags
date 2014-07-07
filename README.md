@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/mjt01/angular-feature-flags/badge.png)](https://coveralls.io/r/mjt01/angular-feature-flags)
 ## angular-feature-flags
 
-An AngularJS module that allows you to control when you release new features in your app by putting them behind feature flags/switches.
+An AngularJS module that allows you to control when you release new features in your app by putting them behind feature flags/switches. **This module only supports Angular v1.2 and up.**
 
 
 ### The idea
@@ -14,7 +14,7 @@ Abstracting your application functionality into small chunks and implementing th
 
 The basic premise is you write your feature and wrap it up in a directive, then where you implement that directive in your markup you add the **feature-flag** directive to the same element. You can then pass the **key** of the flag to this directive to resolve whether of not this feature should be enabled.
 
-The module pulls a json file down which defines the feature flags and which ones are active. If enabled angular will process the directive as normal, if disabled angular will remove the element from the dom.
+The module pulls a json file down which defines the feature flags and which ones are active. If enabled angular will process the directive as normal, if disabled angular will remove the element from the dom and not compile or execute any other directives is has.
 
 You can then add the **override** panel to your app and turn individual features on override the server values, saving the override in local storage which is useful in development.
 
@@ -50,7 +50,7 @@ The flag data that drives the feature flag service is a json format. Below is an
 
 ### Setting flag data
 
-Flag data can be set via the `featureFlags` service using the `set` method. This currently accepts either an [HttpPromise](https://docs.angularjs.org/api/ng/service/$http) or a regular [Promise](https://docs.angularjs.org/api/ng/service/$q). The promise must resolve to a valid collection of (flag data)[#flag-data].
+Flag data can be set via the `featureFlags` service using the `set` method. This currently accepts either a [HttpPromise](https://docs.angularjs.org/api/ng/service/$http) or a regular [Promise](https://docs.angularjs.org/api/ng/service/$q). The promise must resolve to a valid collection of (flag data)[#flag-data].
 
 For example, if you were loading your flag data from a remote JSON file:
 
