@@ -135,6 +135,5 @@ gulp.task('dev', ['build','server'], function() {
 
 
 gulp.task('precommit', ['lint','test','build']);
-
-
 gulp.task('demo', ['build', 'server']);
+gulp.task('default', ['precommit']);
