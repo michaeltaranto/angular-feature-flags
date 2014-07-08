@@ -60,7 +60,8 @@ gulp.task('lint', function() {
            TEST_FILES
         ])
         .pipe(jshint())
-        .pipe(jshint.reporter(jshintStylish));
+        .pipe(jshint.reporter(jshintStylish))
+        .pipe(jshint.reporter('fail'));
 });
 
 

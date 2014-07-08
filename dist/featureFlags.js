@@ -1,5 +1,5 @@
 /*!
- * Angular Feature Flags v0.3.1
+ * Angular Feature Flags v0.0.1
  *
  * © 2014, Michael Taranto
  */
@@ -68,23 +68,45 @@ angular.module('feature-flags').directive('featureFlagOverrides', function(featu
     };
 });
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-    var appName = $rootElement.attr('ng-app');
+    var appName = $rootElement.attr('ng-app'),
+        keyPrefix = 'featureFlags.' + appName + '.',
+
+        prefixedKeyFor = function(flagName) {
+            return keyPrefix + flagName;
+        },
+
+        isPrefixedKey = function(key) {
+            return key.indexOf(keyPrefix) === 0;
+        },
+
+        set = function(value, flagName) {
+            localStorage.setItem(prefixedKeyFor(flagName), value);
+        },
+
+        get = function(flagName) {
+            return localStorage.getItem(prefixedKeyFor(flagName));
+        },
+
+        remove = function(flagName) {
+            localStorage.removeItem(prefixedKeyFor(flagName));
+        };
+
     return {
         isPresent: function(key) {
-            return localStorage.getItem('featureFlags.' + appName + '.' + key) !== null;
+            return get(key) !== null;
         },
-        get: function(key) {
-            return localStorage.getItem('featureFlags.' + appName + '.' + key);
+        get: get,
+        set: function(flag, value) {
+            if (angular.isObject(flag)) {
+                angular.forEach(flag, set);
+            } else {
+                set(value, flag);
+            }
         },
-        set: function(key, value) {
-            localStorage.setItem('featureFlags.' + appName + '.' + key, value);
-        },
-        remove: function(key) {
-            localStorage.removeItem('featureFlags.' + appName + '.' + key);
-        },
+        remove: remove,
         reset: function() {
             for (var key in localStorage) {
-                if (key.indexOf('featureFlags.' + appName + '.') === 0) {
+                if (isPrefixedKey(key)) {
                     localStorage.removeItem(key);
                 }
             }
