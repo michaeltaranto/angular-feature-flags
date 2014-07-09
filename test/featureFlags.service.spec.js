@@ -60,6 +60,21 @@
             });
         });
 
+        describe('when I manually provide an array of flags', function() {
+            var flags = [
+                { active: true, key: 'FLAG_KEY' },
+                { active: false, key: 'FLAG_KEY_2' }
+            ];
+
+            beforeEach(function() {
+                featureFlags.set(flags);
+            });
+
+            it('should return all available flags', function() {
+                expect(featureFlags.get()).toEqual(flags);
+            });
+        });
+
         describe('when I enable a feature flag override', function() {
             var flag = { active: null, key: 'FLAG_KEY' };
 

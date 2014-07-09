@@ -121,16 +121,21 @@ angular.module('feature-flags').service('featureFlags', function(featureFlagOver
                 return flags;
             },
 
-            set = function(promise) {
-                var method = promise.success || promise.then;
+            set = function(newFlags) {
+                return angular.isArray(newFlags) ? setArray(newFlags) : setPromise(newFlags);
+            },
 
-                return method.call(promise, function(response) {
-                        response.forEach(function(flag) {
-                            serverFlagCache[flag.key] = flag.active;
-                            flag.active = isOn(flag.key);
-                        });
-                        angular.copy(response, flags);
-                    });
+            setPromise = function(promise) {
+                var method = promise.success || promise.then;
+                return method.call(promise, setArray);
+            },
+
+            setArray = function(newFlags) {
+                newFlags.forEach(function(flag) {
+                    serverFlagCache[flag.key] = flag.active;
+                    flag.active = isOn(flag.key);
+                });
+                angular.copy(newFlags, flags);
             },
 
             enable = function(flag) {
