@@ -1,4 +1,4 @@
-angular.module('feature-flags').service('featureFlags', function($http, featureFlagOverrides) {
+angular.module('feature-flags').service('featureFlags', function(featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
