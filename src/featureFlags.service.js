@@ -1,4 +1,4 @@
-angular.module('feature-flags').service('featureFlags', function(featureFlagOverrides) {
+angular.module('feature-flags').service('featureFlags', function($q, featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
@@ -7,20 +7,23 @@ angular.module('feature-flags').service('featureFlags', function(featureFlagOver
             },
 
             set = function(newFlags) {
-                return angular.isArray(newFlags) ? setArray(newFlags) : setPromise(newFlags);
+                return angular.isArray(newFlags) ? resolve(updateFlagsAndGetAll(newFlags)) : updateFlagsWithPromise(newFlags);
             },
 
-            setPromise = function(promise) {
-                var method = promise.success || promise.then;
-                return method.call(promise, setArray);
+            updateFlagsWithPromise = function(promise) {
+                return promise.then(function(value) {
+                    return updateFlagsAndGetAll(value.data || value);
+                });
             },
 
-            setArray = function(newFlags) {
+            updateFlagsAndGetAll = function(newFlags) {
                 newFlags.forEach(function(flag) {
                     serverFlagCache[flag.key] = flag.active;
                     flag.active = isOn(flag.key);
                 });
                 angular.copy(newFlags, flags);
+
+                return flags;
             },
 
             enable = function(flag) {
@@ -44,6 +47,12 @@ angular.module('feature-flags').service('featureFlags', function(featureFlagOver
 
             isOn = function(key) {
                 return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : serverFlagCache[key];
+            },
+
+            resolve = function(val) {
+                var deferred = $q.defer();
+                deferred.resolve(val);
+                return deferred.promise;
             };
 
         return {

@@ -20,15 +20,16 @@
             $httpBackend = _$httpBackend_;
         }));
 
-        describe('when I retrieve the list of flags using an HttpPromise', function() {
+        describe('when I set the list of flags using an HttpPromise', function() {
             var flags = [
-                { active: true, key: 'FLAG_KEY' },
-                { active: false, key: 'FLAG_KEY_2' }
-            ];
+                    { active: true, key: 'FLAG_KEY' },
+                    { active: false, key: 'FLAG_KEY_2' }
+                ],
+                promise;
 
             beforeEach(function() {
                 $httpBackend.when('GET', 'data/flags.json').respond(flags);
-                featureFlags.set($http.get('data/flags.json'));
+                promise = featureFlags.set($http.get('data/flags.json'));
                 $httpBackend.flush();
             });
 
@@ -37,40 +38,63 @@
                 $httpBackend.verifyNoOutstandingRequest();
             });
 
-            it('should return all available flags', function() {
+            it('should return a promise that resolves to the flags', function() {
+                promise.then(function(value) {
+                    expect(value).toEqual(flags);
+                });
+                $rootScope.$digest();
+            });
+
+            it('should save the flags', function() {
                 expect(featureFlags.get()).toEqual(flags);
             });
         });
 
-        describe('when I retrieve the list of flags using a regular promise', function() {
+        describe('when I set the list of flags using a regular promise', function() {
             var flags = [
-                { active: true, key: 'FLAG_KEY' },
-                { active: false, key: 'FLAG_KEY_2' }
-            ];
+                    { active: true, key: 'FLAG_KEY' },
+                    { active: false, key: 'FLAG_KEY_2' }
+                ],
+                promise;
 
             beforeEach(function() {
                 var deferred = $q.defer();
                 deferred.resolve(flags);
-                featureFlags.set(deferred.promise);
+                promise = featureFlags.set(deferred.promise);
                 $rootScope.$digest();
             });
 
-            it('should return all available flags', function() {
+            it('should return a promise that resolves to the flags', function() {
+                promise.then(function(value) {
+                    expect(value).toEqual(flags);
+                });
+                $rootScope.$digest();
+            });
+
+            it('should save the flags', function() {
                 expect(featureFlags.get()).toEqual(flags);
             });
         });
 
         describe('when I manually provide an array of flags', function() {
             var flags = [
-                { active: true, key: 'FLAG_KEY' },
-                { active: false, key: 'FLAG_KEY_2' }
-            ];
+                    { active: true, key: 'FLAG_KEY' },
+                    { active: false, key: 'FLAG_KEY_2' }
+                ],
+                promise;
 
             beforeEach(function() {
-                featureFlags.set(flags);
+                promise = featureFlags.set(flags);
             });
 
-            it('should return all available flags', function() {
+            it('should return a promise that resolves to the flags', function() {
+                promise.then(function(value) {
+                    expect(value).toEqual(flags);
+                });
+                $rootScope.$digest();
+            });
+
+            it('should save the flags', function() {
                 expect(featureFlags.get()).toEqual(flags);
             });
         });
