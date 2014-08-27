@@ -60,6 +60,23 @@ myApp.run(function(featureFlags, $http) {
 });
 ```
 
+### Toggling elements
+
+The `feature-flag` directive allows simple toggling of elements based on feature flags, e.g:
+
+```html
+<div feature-flag="myFlag">
+  I will be visible if 'myFlag' is enabled
+</div>
+```
+
+If you need to *hide* elements when a flag is enabled, add the `feature-flag-hide` attribute, e.g:
+
+```html
+<div feature-flag="myFlag" feature-flag-hide>
+  I will *NOT* be visible if 'myFlag' is enabled
+</div>
+```
 
 ### Running the demo
 
