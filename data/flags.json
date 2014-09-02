@@ -1,0 +1,26 @@
+[
+    {
+        "key": "activityFeed",
+        "active": true,
+        "name": "Activity Feed",
+        "description": "Shows the users activity feed as a stream of events that have occurred."
+    },
+    {
+        "key": "messages",
+        "active": true,
+        "name": "Messaging",
+        "description": "Messaging module that allows users to send and receive messages to one another."
+    },
+    {
+        "key": "userProfile",
+        "active": true,
+        "name": "User Profile",
+        "description": "Displays all the information about the logged in user's profile."
+    },
+    {
+        "key": "settings",
+        "active": false,
+        "name": "Settings",
+        "description": "Configure the user's settings and preferences for the app."
+    }
+]

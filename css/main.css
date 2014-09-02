@@ -1,0 +1,30 @@
+::selection { background: transparent; }
+body { background-color: #EAEAEA; font-size: 12px; line-height: 1.4em; font-family: Helvetica,Helvetica Neue,Arial; overflow:hidden; }
+h1 { margin: 20px; font-size: 18px; font-weight: normal; }
+h2 { margin-top: 0; margin-bottom: 10px; font-size: 14px; font-weight: normal; }
+.main, .flagContainer {
+    position: absolute; top: 10%; bottom: 10%;
+    background-color: #FFFFFF;
+    border: 1px solid #CFCFCF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s linear;
+}
+.main { right: 20%; left: 20%; min-width: 500px; background-color: #61a1bc; }
+.main h1 { text-align: center; color: #FFFFFF; margin: 40px; font-size: 30pt; text-shadow: 0 3px 0 rgba(0,0,0,0.1); }
+.flagContainer { left: -1000px; width: 600px; }
+
+.toggle .main { left: 700px; opacity: 0.4; }
+.toggle .flagContainer { left: 0; }
+
+.panel { width: 70%; background-color: #8EC16D; text-align: center; margin: 20px auto; font-size: 17pt; padding: 20px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); font-family: sans-serif; color: #FFF; }
+.panel:hover { cursor: pointer; background-color: #9DC980; }
+.panel.selected { background-color: #EE7777; }
+
+.toggles { height: 20px; width: 20px; background: transparent url('../images/icon.png') no-repeat scroll 0 0; cursor: pointer; }
+
+.feature-flags {}
+.feature-flags .feature-flags-flag { padding: 10px 30px; transition: all 0.2s linear; }
+.feature-flags .feature-flags-name { font-size: 1.2em; float:left; }
+.feature-flags .feature-flags-switch { float: right; padding: 2px 10px; cursor: pointer; }
+.feature-flags .feature-flags-switch.active { font-weight: bold; border: 1px solid currentcolor; padding: 1px 9px; }
+.feature-flags .feature-flags-desc { color: #AAAAAA; clear: both; margin: 0 20px; }
