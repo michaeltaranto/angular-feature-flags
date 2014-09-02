@@ -14,6 +14,9 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     ngmin = require('gulp-ngmin'),
     karma = require('gulp-karma'),
+    ghpages = require('gh-pages'),
+    path = require('path'),
+    gutil = require('gulp-util'),
     coveralls = require('gulp-coveralls'),
     pkg = require('./package.json'),
 
@@ -137,6 +140,9 @@ gulp.task('dev', ['build','server'], function() {
         .pipe(karma(karmaConfig('watch')));
 });
 
+gulp.task('deploy', ['build'], function(done) {
+  ghpages.publish(path.join(__dirname, 'demo'), { logger: gutil.log }, done);
+});
 
 gulp.task('precommit', ['lint','test','build']);
 gulp.task('demo', ['build', 'server']);
