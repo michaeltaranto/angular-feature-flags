@@ -1,4 +1,4 @@
-angular.module('feature-flags').service('featureFlags', function($q, featureFlagOverrides) {
+angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverrides', function($q, featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
@@ -64,4 +64,4 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
             isOn: isOn,
             isOverridden: isOverridden
         };
-    });
+    }]);

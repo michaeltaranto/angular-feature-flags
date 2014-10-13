@@ -6,7 +6,7 @@
 
 (function(){
 angular.module('feature-flags', []);
-angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
+angular.module('feature-flags').directive('featureFlag', ['featureFlags', function(featureFlags) {
     return {
         transclude: 'element',
         priority: 600,
@@ -45,8 +45,9 @@ angular.module('feature-flags').directive('featureFlag', function(featureFlags) 
             };
         }
     };
-});
-angular.module('feature-flags').directive('featureFlagOverrides', function(featureFlags) {
+}]);
+
+angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags', function(featureFlags) {
     return {
         restrict: 'A',
         link: function postLink($scope) {
@@ -70,8 +71,9 @@ angular.module('feature-flags').directive('featureFlagOverrides', function(featu
                   '</div>',
         replace: true
     };
-});
-angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
+}]);
+
+angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', function($rootElement) {
     var appName = $rootElement.attr('ng-app'),
         keyPrefix = 'featureFlags.' + appName + '.',
 
@@ -116,8 +118,9 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
             }
         }
     };
-});
-angular.module('feature-flags').service('featureFlags', function($q, featureFlagOverrides) {
+}]);
+
+angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverrides', function($q, featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
@@ -183,5 +186,6 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
             isOn: isOn,
             isOverridden: isOverridden
         };
-    });
+    }]);
+
 }());

@@ -1,4 +1,4 @@
-angular.module('feature-flags').directive('featureFlagOverrides', function(featureFlags) {
+angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags', function(featureFlags) {
     return {
         restrict: 'A',
         link: function postLink($scope) {
@@ -22,4 +22,4 @@ angular.module('feature-flags').directive('featureFlagOverrides', function(featu
                   '</div>',
         replace: true
     };
-});
+}]);

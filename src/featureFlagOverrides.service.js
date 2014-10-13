@@ -1,4 +1,4 @@
-angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
+angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', function($rootElement) {
     var appName = $rootElement.attr('ng-app'),
         keyPrefix = 'featureFlags.' + appName + '.',
 
@@ -43,4 +43,4 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
             }
         }
     };
-});
+}]);
