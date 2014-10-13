@@ -1,4 +1,4 @@
-angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
+angular.module('feature-flags').directive('featureFlag', ['featureFlags', function(featureFlags) {
     return {
         transclude: 'element',
         priority: 600,
@@ -37,4 +37,4 @@ angular.module('feature-flags').directive('featureFlag', function(featureFlags) 
             };
         }
     };
-});
+}]);
