@@ -12,7 +12,7 @@ var gulp = require('gulp'),
     wrap = require('gulp-wrap'),
     concat = require('gulp-concat'),
     clean = require('gulp-clean'),
-    ngmin = require('gulp-ngmin'),
+    ngannotate = require('gulp-ng-annotate'),
     karma = require('gulp-karma'),
     ghpages = require('gh-pages'),
     path = require('path'),
@@ -120,9 +120,9 @@ gulp.task('build', function () {
             ' * © <%= new Date().getFullYear() %>, <%= author.name %>',
             ' */\n\n'
           ].join('\n'), pkg))
+        .pipe(ngannotate({ add: true, single_quotes: true }))
         .pipe(gulp.dest('dist/'))
         .pipe(rename('featureFlags.min.js'))
-        .pipe(ngmin())
         .pipe(uglify())
         .pipe(header([
             '/*! <%= title %> v<%= version %> © <%= new Date().getFullYear() %> <%= author.name %> */\n'
