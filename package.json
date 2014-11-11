@@ -15,8 +15,12 @@
     "url": "https://github.com/mjt01/angular-feature-flags.git"
   },
   "author": {
-    "name": "Michael Taranto"
+    "name": "Michael Taranto",  
+    "homepage": "https://github.com/mjt01"
   },
+  "contributors": [
+    { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
+  ],
   "engines": {
     "node": ">=0.10.0"
   },

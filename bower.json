@@ -2,7 +2,8 @@
   "name": "angular-feature-flags",
   "version": "0.0.4",
   "authors": [
-    { "name": "Michael Taranto", "homepage": "https://github.com/mjt01" }
+    { "name": "Michael Taranto", "homepage": "https://github.com/mjt01" },
+    { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
   ],
   "description": "Feature Flag module for Angular JS apps",
   "homepage": "https://github.com/mjt01/angular-feature-flags",
