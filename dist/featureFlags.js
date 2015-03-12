@@ -1,7 +1,7 @@
 /*!
- * Angular Feature Flags v0.0.3
+ * Angular Feature Flags v0.0.4
  *
- * © 2014, Michael Taranto
+ * © 2015, Michael Taranto
  */
 
 (function(){
@@ -9,7 +9,7 @@ angular.module('feature-flags', []);
 angular.module('feature-flags').directive('featureFlag', ['featureFlags', function(featureFlags) {
     return {
         transclude: 'element',
-        priority: 600,
+        priority: 599,
         terminal: true,
         restrict: 'A',
         $$tlb: true,

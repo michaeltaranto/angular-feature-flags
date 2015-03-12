@@ -1,7 +1,7 @@
 angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
     return {
         transclude: 'element',
-        priority: 600,
+        priority: 599,
         terminal: true,
         restrict: 'A',
         $$tlb: true,
