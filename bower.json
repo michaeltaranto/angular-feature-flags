@@ -13,6 +13,6 @@
     "!README.md"
   ],
   "main": [
-    "dist/**/*"
+    "dist/featureFlags.js"
   ]
 }
