@@ -5,6 +5,9 @@
     { "name": "Michael Taranto", "homepage": "https://github.com/mjt01" },
     { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
   ],
+  "dependencies": {
+    "angular": "*"
+  },
   "description": "Feature Flag module for Angular JS apps",
   "homepage": "https://github.com/mjt01/angular-feature-flags",
   "ignore": [
