@@ -6,7 +6,7 @@
     { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
   ],
   "dependencies": {
-    "angular": "*"
+    "angular": ">=1.2"
   },
   "description": "Feature Flag module for Angular JS apps",
   "homepage": "https://github.com/mjt01/angular-feature-flags",
