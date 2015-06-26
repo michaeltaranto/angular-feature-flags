@@ -21,6 +21,12 @@
   "contributors": [
     { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
   ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mjt01.mit-license.org"
+    }
+  ],
   "engines": {
     "node": ">=0.10.0"
   },

@@ -96,3 +96,8 @@ This relies on Gulp also obviously, to run the test suite:
 - Checkout the project
 - Switch to the directory
 - Run 'gulp test'
+
+
+## License
+
+[MIT](http://mjt01.mit-license.org)

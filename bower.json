@@ -17,5 +17,6 @@
   ],
   "main": [
     "dist/featureFlags.js"
-  ]
+  ],
+  "license": "MIT"
 }
