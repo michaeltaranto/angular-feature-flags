@@ -1,5 +1,5 @@
 /*!
- * Angular Feature Flags v0.0.4
+ * Angular Feature Flags v0.1.0
  *
  * © 2015, Michael Taranto
  */
