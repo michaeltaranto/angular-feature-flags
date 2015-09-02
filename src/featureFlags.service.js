@@ -46,7 +46,11 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
             },
 
             isOn = function(key) {
-                return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : serverFlagCache[key];
+                return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : isOnByDefault(key);
+            },
+            
+            isOnByDefault = function(key) {
+                return serverFlagCache[key];
             },
 
             resolve = function(val) {
@@ -62,6 +66,7 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
             disable: disable,
             reset: reset,
             isOn: isOn,
+            isOnByDefault: isOnByDefault,
             isOverridden: isOverridden
         };
     });
