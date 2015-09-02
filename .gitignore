@@ -2,3 +2,6 @@ node_modules
 test/coverage
 demo/scripts/featureFlags.min.js
 .idea
+nbproject
+bower_components
+coverage
