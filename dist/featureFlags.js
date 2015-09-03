@@ -6,6 +6,7 @@
 
 (function(){
 angular.module('feature-flags', []);
+
 angular.module('feature-flags').directive('featureFlag', ['featureFlags', function(featureFlags) {
     return {
         transclude: 'element',
@@ -13,15 +14,15 @@ angular.module('feature-flags').directive('featureFlag', ['featureFlags', functi
         terminal: true,
         restrict: 'A',
         $$tlb: true,
-        compile: function featureFlagCompile(tElement, attrs) {
-            var hasHideAttribute = 'featureFlagHide' in attrs;
+        compile: function featureFlagCompile(tElement, tAttrs) {
+            var hasHideAttribute = 'featureFlagHide' in tAttrs;
 
-            tElement[0].textContent = ' featureFlag: ' + attrs.featureFlag + ' is ' + (hasHideAttribute ? 'on' : 'off') + ' ';
+            tElement[0].textContent = ' featureFlag: ' + tAttrs.featureFlag + ' is ' + (hasHideAttribute ? 'on' : 'off') + ' ';
 
             return function featureFlagPostLink($scope, element, attrs, ctrl, $transclude) {
                 var featureEl, childScope;
                 $scope.$watch(function featureFlagWatcher() {
-                        return featureFlags.isOn(attrs.featureFlag);
+                    return featureFlags.isOn(attrs.featureFlag);
                 }, function featureFlagChanged(isEnabled) {
                     var showElement = hasHideAttribute ? !isEnabled : isEnabled;
 
@@ -32,11 +33,11 @@ angular.module('feature-flags').directive('featureFlag', ['featureFlags', functi
                             element.after(featureEl).remove();
                         });
                     } else {
-                        if(childScope) {
+                        if (childScope) {
                             childScope.$destroy();
                             childScope = null;
                         }
-                        if(featureEl) {
+                        if (featureEl) {
                             featureEl.after(element).remove();
                             featureEl = null;
                         }
@@ -46,6 +47,7 @@ angular.module('feature-flags').directive('featureFlag', ['featureFlags', functi
         }
     };
 }]);
+
 angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags', function(featureFlags) {
     return {
         restrict: 'A',
@@ -60,18 +62,19 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
             $scope.isOnByDefault = featureFlags.isOnByDefault;
         },
         template: '<div class="feature-flags">' +
-                  '    <h1>Feature Flags</h1>'+
-                  '    <div class="feature-flags-flag" ng-repeat="flag in flags">'+
-                  '        <div class="feature-flags-name">{{flag.name || flag.key}}</div>'+
-                  '        <div class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>'+
-                  '        <div class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>'+
-                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{isOnByDefault(flag.key)?\'ON\':\'OFF\'}})</div>'+
-                  '        <div class="feature-flags-desc">{{flag.description}}</div>'+
-                  '    </div>'+
+                  '    <h1>Feature Flags</h1>' +
+                  '    <div class="feature-flags-flag" ng-repeat="flag in flags">' +
+                  '        <div class="feature-flags-name">{{flag.name || flag.key}}</div>' +
+                  '        <div class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>' +
+                  '        <div class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>' +
+                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{ isOnByDefault(flag.key) ? \'ON\' : \'OFF\' }})</div>' +
+                  '        <div class="feature-flags-desc">{{flag.description}}</div>' +
+                  '    </div>' +
                   '</div>',
         replace: true
     };
 }]);
+
 angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', function($rootElement) {
     var appName = $rootElement.attr('ng-app'),
         keyPrefix = 'featureFlags.' + appName + '.',
@@ -110,7 +113,8 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         },
         remove: remove,
         reset: function() {
-            for (var key in localStorage) {
+            var key;
+            for (key in localStorage) {
                 if (isPrefixedKey(key)) {
                     localStorage.removeItem(key);
                 }
@@ -118,22 +122,23 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         }
     };
 }]);
+
 angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverrides', function($q, featureFlagOverrides) {
         var serverFlagCache = {},
             flags = [],
 
-            get = function() {
-                return flags;
+            resolve = function(val) {
+                var deferred = $q.defer();
+                deferred.resolve(val);
+                return deferred.promise;
             },
 
-            set = function(newFlags) {
-                return angular.isArray(newFlags) ? resolve(updateFlagsAndGetAll(newFlags)) : updateFlagsWithPromise(newFlags);
+            isOverridden = function(key) {
+                return featureFlagOverrides.isPresent(key);
             },
 
-            updateFlagsWithPromise = function(promise) {
-                return promise.then(function(value) {
-                    return updateFlagsAndGetAll(value.data || value);
-                });
+            isOn = function(key) {
+                return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[key];
             },
 
             updateFlagsAndGetAll = function(newFlags) {
@@ -144,6 +149,20 @@ angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverr
                 angular.copy(newFlags, flags);
 
                 return flags;
+            },
+
+            updateFlagsWithPromise = function(promise) {
+                return promise.then(function(value) {
+                    return updateFlagsAndGetAll(value.data || value);
+                });
+            },
+
+            get = function() {
+                return flags;
+            },
+
+            set = function(newFlags) {
+                return angular.isArray(newFlags) ? resolve(updateFlagsAndGetAll(newFlags)) : updateFlagsWithPromise(newFlags);
             },
 
             enable = function(flag) {
@@ -159,24 +178,6 @@ angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverr
             reset = function(flag) {
                 flag.active = serverFlagCache[flag.key];
                 featureFlagOverrides.remove(flag.key);
-            },
-
-            isOverridden = function(key) {
-                return featureFlagOverrides.isPresent(key);
-            },
-
-            isOn = function(key) {
-                return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : isOnByDefault(key);
-            },
-            
-            isOnByDefault = function(key) {
-                return serverFlagCache[key];
-            },
-
-            resolve = function(val) {
-                var deferred = $q.defer();
-                deferred.resolve(val);
-                return deferred.promise;
             };
 
         return {
@@ -190,4 +191,5 @@ angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverr
             isOverridden: isOverridden
         };
     }]);
+
 }());

@@ -1,31 +1,31 @@
-angular.module("my-app")
-    .directive("activityFeed", function() {
+angular.module('my-app')
+    .directive('activityFeed', function() {
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Activity Feed</div>',
             replace: true
         };
     })
-    .directive("messaging", function() {
+    .directive('messaging', function() {
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Messaging</div>',
             replace: true
         };
     })
-    .directive("userProfile", function() {
+    .directive('userProfile', function() {
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">User Profile</div>',
             replace: true
         };
     })
-    .directive("settings", function() {
+    .directive('settings', function() {
         return {
-            restrict: "A",
+            restrict: 'A',
             scope: {},
             template: '<div class="panel" ng-class="{selected: selected}" ng-click="selected = !selected;">Settings</div>',
             replace: true

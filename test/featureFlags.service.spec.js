@@ -1,5 +1,8 @@
-(function () {
+(function(angular) {
     'use strict';
+
+    var module = angular.mock.module,
+        inject = angular.mock.inject;
 
     describe('Service: featureFlags', function() {
         var featureFlags,
@@ -115,7 +118,7 @@
                 expect(flag.active).toBe(true);
             });
         });
-        
+
         describe('when I disable a feature flag override', function() {
             var flag = { active: null, key: 'FLAG_KEY' };
 
@@ -157,7 +160,7 @@
                 expect(flag.active).toBe(originalFlagValue);
             });
         });
-        
+
         describe('when I check if there is an local override', function() {
             var flag = { active: null, key: 'FLAG_KEY' };
 
@@ -170,7 +173,7 @@
                     expect(featureFlags.isOverridden(flag.key)).toBe(true);
                 });
             });
-            
+
             describe('if there is not', function() {
                 beforeEach(function() {
                     spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
@@ -196,13 +199,13 @@
                     $httpBackend.verifyNoOutstandingExpectation();
                     $httpBackend.verifyNoOutstandingRequest();
                 });
-                
+
                 describe('and there is a local override to turn it on', function() {
                     beforeEach(function() {
                         spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
                         spyOn(featureFlagOverrides, 'get').andReturn('true');
                     });
-                    
+
                     it('should report the feature as being on', function() {
                         expect(featureFlags.isOn(flag.key)).toBe(true);
                     });
@@ -232,7 +235,7 @@
                     $httpBackend.verifyNoOutstandingExpectation();
                     $httpBackend.verifyNoOutstandingRequest();
                 });
-                
+
                 describe('and there is a local override to turn it off', function() {
                     beforeEach(function() {
                         spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
@@ -256,4 +259,4 @@
             });
         });
     });
-}());
+}(window.angular));

@@ -1,5 +1,8 @@
-(function () {
+(function(angular) {
     'use strict';
+
+    var module = angular.mock.module,
+        inject = angular.mock.inject;
 
     describe('Directive: FeatureFlag', function() {
         var $scope, parentElement, featureElement, flagCheck;
@@ -7,7 +10,6 @@
         beforeEach(module('feature-flags'));
 
         describe('when using the feature-flag directive in isolation', function() {
-
             beforeEach(inject(function($rootScope, $compile, featureFlags) {
                 featureElement = angular.element('<div feature-flag="FLAG_NAME">Hello world</div>')[0];
                 parentElement = angular.element('<div></div>').append(featureElement)[0];
@@ -26,7 +28,7 @@
                     });
 
                     it('should leave the element in the dom', function() {
-                        expect(parentElement.innerText).toEqual("Hello world");
+                        expect(parentElement.innerText).toEqual('Hello world');
                     });
                 });
 
@@ -57,11 +59,9 @@
                     expect(parentElement.childNodes[0].outerHtml).toBe(featureElement.outerHtml);
                 });
             });
-
         });
 
         describe('when using the feature-flag directive with the feature-flag-hide attribute', function() {
-
             beforeEach(inject(function($rootScope, $compile, featureFlags) {
                 featureElement = angular.element('<div feature-flag="FLAG_NAME" feature-flag-hide>Hello world</div>')[0];
                 parentElement = angular.element('<div></div>').append(featureElement)[0];
@@ -93,7 +93,7 @@
                     });
 
                     it('should leave the element in the dom', function() {
-                        expect(parentElement.innerText).toEqual("Hello world");
+                        expect(parentElement.innerText).toEqual('Hello world');
                     });
                 });
             });
@@ -107,11 +107,9 @@
                 });
 
                 it('should leave the element in the dom', function() {
-                    expect(parentElement.innerText).toEqual("Hello world");
+                    expect(parentElement.innerText).toEqual('Hello world');
                 });
             });
-
         });
-
     });
-}());
+}(window.angular));
