@@ -15,11 +15,11 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
             isOn = function(key) {
                 return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[key];
             },
-            
+
             isOnByDefault = function(key) {
                 return serverFlagCache[key];
             },
-            
+
             updateFlagsAndGetAll = function(newFlags) {
                 newFlags.forEach(function(flag) {
                     serverFlagCache[flag.key] = flag.active;
