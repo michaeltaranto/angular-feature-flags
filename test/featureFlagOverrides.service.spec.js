@@ -1,5 +1,8 @@
-(function () {
+(function(angular) {
     'use strict';
+
+    var module = angular.mock.module,
+        inject = angular.mock.inject;
 
     describe('Service: featureFlagOverrides', function() {
         var service, appName = '';
@@ -65,17 +68,17 @@
                 beforeEach(function() {
                     spyOn(localStorage, 'getItem').andReturn('true');
                 });
-                
+
                 it('should return true if there is a value', function() {
                     expect(service.isPresent('FLAG_KEY')).toBe(true);
                 });
             });
-            
+
             describe('if there is not one', function() {
                 beforeEach(function() {
                     spyOn(localStorage, 'getItem').andReturn(null);
                 });
-                
+
                 it('should return false if there is no value', function() {
                     expect(service.isPresent('FLAG_KEY')).toBe(false);
                 });
@@ -107,4 +110,4 @@
             });
         });
     });
-}());
+}(window.angular));

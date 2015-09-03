@@ -2,8 +2,7 @@
 //  MODULES
 //--------------------------------
 var gulp = require('gulp'),
-    jshint = require('gulp-jshint'),
-    jshintStylish = require('jshint-stylish'),
+    eslint = require('gulp-eslint'),
     connect = require('gulp-connect'),
     opn = require('opn'),
     rename = require('gulp-rename'),
@@ -62,9 +61,9 @@ gulp.task('lint', function() {
            SRC_FILES,
            TEST_FILES
         ])
-        .pipe(jshint())
-        .pipe(jshint.reporter(jshintStylish))
-        .pipe(jshint.reporter('fail'));
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failOnError());
 });
 
 

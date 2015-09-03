@@ -5,15 +5,15 @@ angular.module('feature-flags').directive('featureFlag', function(featureFlags) 
         terminal: true,
         restrict: 'A',
         $$tlb: true,
-        compile: function featureFlagCompile(tElement, attrs) {
-            var hasHideAttribute = 'featureFlagHide' in attrs;
+        compile: function featureFlagCompile(tElement, tAttrs) {
+            var hasHideAttribute = 'featureFlagHide' in tAttrs;
 
-            tElement[0].textContent = ' featureFlag: ' + attrs.featureFlag + ' is ' + (hasHideAttribute ? 'on' : 'off') + ' ';
+            tElement[0].textContent = ' featureFlag: ' + tAttrs.featureFlag + ' is ' + (hasHideAttribute ? 'on' : 'off') + ' ';
 
             return function featureFlagPostLink($scope, element, attrs, ctrl, $transclude) {
                 var featureEl, childScope;
                 $scope.$watch(function featureFlagWatcher() {
-                        return featureFlags.isOn(attrs.featureFlag);
+                    return featureFlags.isOn(attrs.featureFlag);
                 }, function featureFlagChanged(isEnabled) {
                     var showElement = hasHideAttribute ? !isEnabled : isEnabled;
 
@@ -24,11 +24,11 @@ angular.module('feature-flags').directive('featureFlag', function(featureFlags) 
                             element.after(featureEl).remove();
                         });
                     } else {
-                        if(childScope) {
+                        if (childScope) {
                             childScope.$destroy();
                             childScope = null;
                         }
-                        if(featureEl) {
+                        if (featureEl) {
                             featureEl.after(element).remove();
                             featureEl = null;
                         }

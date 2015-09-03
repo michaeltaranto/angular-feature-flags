@@ -1,5 +1,8 @@
-(function () {
+(function(angular) {
     'use strict';
+
+    var module = angular.mock.module,
+        inject = angular.mock.inject;
 
     describe('Directive: featureFlagsOverrides', function() {
         var $scope, container, featureFlags;
@@ -15,7 +18,7 @@
             spyOn(featureFlags, 'disable');
             spyOn(featureFlags, 'reset');
             spyOn(featureFlags, 'get').andReturn('FLAGS_ARRAY');
-            
+
             container = angular.element('<div feature-flag-overrides></div>');
             $compile(container)($scope);
         }));
@@ -34,7 +37,7 @@
             beforeEach(function() {
                 $scope.isOn();
             });
-            
+
             it('should check if a flag is on', function() {
                 expect(featureFlags.isOn).toHaveBeenCalled();
             });
@@ -80,4 +83,4 @@
             });
         });
     });
-}());
+}(window.angular));

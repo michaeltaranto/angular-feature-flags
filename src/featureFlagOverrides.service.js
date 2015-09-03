@@ -36,7 +36,8 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         },
         remove: remove,
         reset: function() {
-            for (var key in localStorage) {
+            var key;
+            for (key in localStorage) {
                 if (isPrefixedKey(key)) {
                     localStorage.removeItem(key);
                 }

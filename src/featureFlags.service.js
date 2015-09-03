@@ -2,18 +2,18 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
         var serverFlagCache = {},
             flags = [],
 
-            get = function() {
-                return flags;
+            resolve = function(val) {
+                var deferred = $q.defer();
+                deferred.resolve(val);
+                return deferred.promise;
             },
 
-            set = function(newFlags) {
-                return angular.isArray(newFlags) ? resolve(updateFlagsAndGetAll(newFlags)) : updateFlagsWithPromise(newFlags);
+            isOverridden = function(key) {
+                return featureFlagOverrides.isPresent(key);
             },
 
-            updateFlagsWithPromise = function(promise) {
-                return promise.then(function(value) {
-                    return updateFlagsAndGetAll(value.data || value);
-                });
+            isOn = function(key) {
+                return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[key];
             },
 
             updateFlagsAndGetAll = function(newFlags) {
@@ -24,6 +24,20 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
                 angular.copy(newFlags, flags);
 
                 return flags;
+            },
+
+            updateFlagsWithPromise = function(promise) {
+                return promise.then(function(value) {
+                    return updateFlagsAndGetAll(value.data || value);
+                });
+            },
+
+            get = function() {
+                return flags;
+            },
+
+            set = function(newFlags) {
+                return angular.isArray(newFlags) ? resolve(updateFlagsAndGetAll(newFlags)) : updateFlagsWithPromise(newFlags);
             },
 
             enable = function(flag) {
@@ -39,20 +53,6 @@ angular.module('feature-flags').service('featureFlags', function($q, featureFlag
             reset = function(flag) {
                 flag.active = serverFlagCache[flag.key];
                 featureFlagOverrides.remove(flag.key);
-            },
-
-            isOverridden = function(key) {
-                return featureFlagOverrides.isPresent(key);
-            },
-
-            isOn = function(key) {
-                return isOverridden(key) ? featureFlagOverrides.get(key) == 'true' : serverFlagCache[key];
-            },
-
-            resolve = function(val) {
-                var deferred = $q.defer();
-                deferred.resolve(val);
-                return deferred.promise;
             };
 
         return {
