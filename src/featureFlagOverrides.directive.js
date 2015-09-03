@@ -17,7 +17,7 @@ angular.module('feature-flags').directive('featureFlagOverrides', function(featu
                   '        <div class="feature-flags-name">{{flag.name || flag.key}}</div>' +
                   '        <div class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>' +
                   '        <div class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>' +
-                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT</div>' +
+                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{isOnByDefault(flag.key) ? \'ON\' : \'OFF\'}})</div>' +
                   '        <div class="feature-flags-desc">{{flag.description}}</div>' +
                   '    </div>' +
                   '</div>',
