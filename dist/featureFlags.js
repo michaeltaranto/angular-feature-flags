@@ -59,6 +59,7 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
             $scope.enable = featureFlags.enable;
             $scope.disable = featureFlags.disable;
             $scope.reset = featureFlags.reset;
+            $scope.isOnByDefault = featureFlags.isOnByDefault;
         },
         template: '<div class="feature-flags">' +
                   '    <h1>Feature Flags</h1>' +
@@ -66,7 +67,7 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
                   '        <div class="feature-flags-name">{{flag.name || flag.key}}</div>' +
                   '        <div class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>' +
                   '        <div class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>' +
-                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{ isOnByDefault(flag.key) ? \'ON\' : \'OFF\' }})</div>' +
+                  '        <div class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{isOnByDefault(flag.key) ? \'ON\' : \'OFF\'}})</div>' +
                   '        <div class="feature-flags-desc">{{flag.description}}</div>' +
                   '    </div>' +
                   '</div>',
@@ -140,6 +141,10 @@ angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverr
                 return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[key];
             },
 
+            isOnByDefault = function(key) {
+                return serverFlagCache[key];
+            },
+
             updateFlagsAndGetAll = function(newFlags) {
                 newFlags.forEach(function(flag) {
                     serverFlagCache[flag.key] = flag.active;
@@ -186,6 +191,7 @@ angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverr
             disable: disable,
             reset: reset,
             isOn: isOn,
+            isOnByDefault: isOnByDefault,
             isOverridden: isOverridden
         };
     }]);
