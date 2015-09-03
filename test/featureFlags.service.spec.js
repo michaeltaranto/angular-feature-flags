@@ -185,6 +185,73 @@
             });
         });
 
+        describe('when I check a feature flag default state', function() {
+            var onFlag = { active: true, key: 'FLAG_KEY_ON' };
+            var offFlag = { active: false, key: 'FLAG_KEY_OFF' };
+            var onFlagOverridden = { active: true, key: 'FLAG_KEY_ON_OVERRIDDEN' };
+            var offFlagOverridden = { active: false, key: 'FLAG_KEY_OFF_OVERRRIDDEN' };
+            var undefinedFlag = { key: 'FLAG_UNDEFINED' };
+            var undefinedFlagOverridden = { key: 'FLAG_UNDEFINED_OVERRIDDEN' };
+
+            beforeEach(function(done) {
+                var flagsToLoad = [onFlag, offFlag, onFlagOverridden, offFlagOverridden];
+                $httpBackend.when('GET', 'data/flags.json').respond(flagsToLoad);
+                featureFlags.set($http.get('data/flags.json')).finally(done);
+                $httpBackend.flush();
+            });
+
+            beforeEach(function() {
+                featureFlags.disable(onFlagOverridden.key);
+                featureFlags.enable(offFlagOverridden.key);
+                featureFlags.enable(undefinedFlagOverridden.key);
+            });
+
+            afterEach(function() {
+                $httpBackend.verifyNoOutstandingExpectation();
+                $httpBackend.verifyNoOutstandingRequest();
+            });
+
+            describe('and flags are not overridden', function() {
+                it('should report feature is on by default when it is', function() {
+                    expect(featureFlags.isOnByDefault(onFlag.key)).toBe(true);
+                });
+
+                it('should report feature is off by default when it is', function() {
+                    expect(featureFlags.isOnByDefault(offFlag.key)).toBe(false);
+                });
+
+                it('should return undefined if the key was not loaded by set()', function() {
+                    expect(typeof featureFlags.isOnByDefault(undefinedFlag.key)).toBe('undefined');
+                });
+
+                it('should report feature is on by default when it is even when disabled', function() {
+                    expect(featureFlags.isOnByDefault(onFlagOverridden.key)).toBe(true);
+                });
+
+                it('should report feature is off by default when it is even when enabled', function() {
+                    expect(featureFlags.isOnByDefault(offFlagOverridden.key)).toBe(false);
+                });
+
+                it('should return undefined if the key was not loaded by set() even when enabled', function() {
+                    expect(typeof featureFlags.isOnByDefault(undefinedFlagOverridden.key)).toBe('undefined');
+                });
+            });
+
+            describe('and flags are overridden', function() {
+                it('should report feature is on by default when it is', function() {
+                    expect(featureFlags.isOnByDefault(onFlag.key)).toBe(true);
+                });
+
+                it('should report feature is off by default when it is', function() {
+                    expect(featureFlags.isOnByDefault(offFlag.key)).toBe(false);
+                });
+
+                it('should return undefined if the key was not loaded by set()', function() {
+                    expect(typeof featureFlags.isOnByDefault('unknown')).toBe('undefined');
+                });
+            });
+        });
+
         describe('when I check a feature flags state', function() {
             describe('if the feature is disabled on the server', function() {
                 var flag = { active: false, key: 'FLAG_KEY' };
