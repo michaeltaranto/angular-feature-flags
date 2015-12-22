@@ -61,7 +61,9 @@ gulp.task('lint', function() {
            SRC_FILES,
            TEST_FILES
         ])
-        .pipe(eslint())
+        .pipe(eslint({
+            configFile: '.eslintrc.js'
+        }))
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
 });
