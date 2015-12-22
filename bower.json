@@ -1,6 +1,6 @@
 {
   "name": "angular-feature-flags",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "authors": [
     { "name": "Michael Taranto", "homepage": "https://github.com/mjt01" },
     { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
