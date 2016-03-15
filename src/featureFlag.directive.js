@@ -1,4 +1,4 @@
-angular.module('feature-flags').directive('featureFlag', function(featureFlags) {
+angular.module('feature-flags').directive('featureFlag', function(featureFlags, $interpolate) {
     return {
         transclude: 'element',
         priority: 599,
@@ -13,7 +13,8 @@ angular.module('feature-flags').directive('featureFlag', function(featureFlags) 
             return function featureFlagPostLink($scope, element, attrs, ctrl, $transclude) {
                 var featureEl, childScope;
                 $scope.$watch(function featureFlagWatcher() {
-                    return featureFlags.isOn(attrs.featureFlag);
+                    var featureFlag = $interpolate(attrs.featureFlag)($scope);
+                    return featureFlags.isOn(featureFlag);
                 }, function featureFlagChanged(isEnabled) {
                     var showElement = hasHideAttribute ? !isEnabled : isEnabled;
 
