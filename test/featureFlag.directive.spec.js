@@ -61,6 +61,31 @@
             });
         });
 
+        describe('when using a dynamic feature-flag in directive', function() {
+            var featureFlags;
+
+            beforeEach(inject(function($rootScope, $compile, _featureFlags_) {
+                featureFlags = _featureFlags_;
+                featureElement = angular.element('<div feature-flag="{{dynamicFlags.key}}">Hello world</div>')[0];
+                parentElement = angular.element('<div></div>').append(featureElement)[0];
+
+                spyOn(featureFlags, 'isOn');
+
+                $scope = $rootScope.$new();
+                $scope.dynamicFlags = {
+                    key: 'dynamic-flag-key'
+                };
+                $compile(parentElement)($scope);
+            }));
+
+            describe('when flag is checked', function() {
+                it('should be called with the interpolated key', function() {
+                    $scope.$digest();
+                    expect(featureFlags.isOn).toHaveBeenCalledWith('dynamic-flag-key');
+                });
+            });
+        });
+
         describe('when using the feature-flag directive with the feature-flag-hide attribute', function() {
             beforeEach(inject(function($rootScope, $compile, featureFlags) {
                 featureElement = angular.element('<div feature-flag="FLAG_NAME" feature-flag-hide>Hello world</div>')[0];
