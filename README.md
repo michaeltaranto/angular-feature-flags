@@ -60,6 +60,18 @@ myApp.run(function(featureFlags, $http) {
 });
 ```
 
+### Setting flag data on config phase (≥ v1.1.0)
+
+From version v1.1.0 you can also initialize the feature flags in the config phase of your application:
+
+```js
+myApp.config(function(featureFlagsProvider) {
+  featureFlagsProvider.setInitialFlags([
+    { "key": "...", "active": "...", "name": "...", "description": "..." },
+  ]);
+});
+```
+
 ### Toggling elements
 
 The `feature-flag` directive allows simple toggling of elements based on feature flags, e.g:
