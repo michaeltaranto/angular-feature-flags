@@ -1,9 +1,15 @@
 {
   "name": "angular-feature-flags",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "authors": [
-    { "name": "Michael Taranto", "homepage": "https://github.com/mjt01" },
-    { "name": "Mark Dalgleish", "homepage": "https://github.com/markdalgleish" }
+    {
+      "name": "Michael Taranto",
+      "homepage": "https://github.com/mjt01"
+    },
+    {
+      "name": "Mark Dalgleish",
+      "homepage": "https://github.com/markdalgleish"
+    }
   ],
   "dependencies": {
     "angular": ">=1.2"
