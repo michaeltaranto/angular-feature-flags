@@ -11,14 +11,26 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         },
 
         set = function(value, flagName) {
+            if (!localStorage) {
+                return;
+            }
+
             localStorage.setItem(prefixedKeyFor(flagName), value);
         },
 
         get = function(flagName) {
+            if (!localStorage) {
+                return null;
+            }
+
             return localStorage.getItem(prefixedKeyFor(flagName));
         },
 
         remove = function(flagName) {
+            if (!localStorage) {
+                return;
+            }
+
             localStorage.removeItem(prefixedKeyFor(flagName));
         };
 
@@ -37,6 +49,10 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         remove: remove,
         reset: function() {
             var key;
+            if (!localStorage) {
+                return;
+            }
+
             for (key in localStorage) {
                 if (isPrefixedKey(key)) {
                     localStorage.removeItem(key);

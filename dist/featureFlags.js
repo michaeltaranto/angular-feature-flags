@@ -1,5 +1,5 @@
 /*!
- * Angular Feature Flags v1.0.0
+ * Angular Feature Flags v1.1.0
  *
  * © 2016, Michael Taranto
  */
@@ -89,14 +89,26 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         },
 
         set = function(value, flagName) {
+            if (!localStorage) {
+                return;
+            }
+
             localStorage.setItem(prefixedKeyFor(flagName), value);
         },
 
         get = function(flagName) {
+            if (!localStorage) {
+                return null;
+            }
+
             return localStorage.getItem(prefixedKeyFor(flagName));
         },
 
         remove = function(flagName) {
+            if (!localStorage) {
+                return;
+            }
+
             localStorage.removeItem(prefixedKeyFor(flagName));
         };
 
@@ -115,6 +127,10 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         remove: remove,
         reset: function() {
             var key;
+            if (!localStorage) {
+                return;
+            }
+
             for (key in localStorage) {
                 if (isPrefixedKey(key)) {
                     localStorage.removeItem(key);
