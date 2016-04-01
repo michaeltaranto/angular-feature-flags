@@ -76,6 +76,16 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
     };
 }]);
 
+var localStorageAvailable = (function() {
+    try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}());
+
 angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', function($rootElement) {
     var appName = $rootElement.attr('ng-app'),
         keyPrefix = 'featureFlags.' + appName + '.',
@@ -89,7 +99,7 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         },
 
         set = function(value, flagName) {
-            if (!localStorage) {
+            if (!localStorageAvailable) {
                 return;
             }
 
@@ -97,7 +107,7 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         },
 
         get = function(flagName) {
-            if (!localStorage) {
+            if (!localStorageAvailable) {
                 return null;
             }
 
@@ -105,7 +115,7 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         },
 
         remove = function(flagName) {
-            if (!localStorage) {
+            if (!localStorageAvailable) {
                 return;
             }
 
@@ -127,7 +137,7 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
         remove: remove,
         reset: function() {
             var key;
-            if (!localStorage) {
+            if (!localStorageAvailable) {
                 return;
             }
 
