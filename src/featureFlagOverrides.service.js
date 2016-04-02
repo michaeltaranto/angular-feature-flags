@@ -1,3 +1,13 @@
+var localStorageAvailable = (function() {
+    try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}());
+
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
     var appName = $rootElement.attr('ng-app'),
         keyPrefix = 'featureFlags.' + appName + '.',
@@ -11,14 +21,26 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         },
 
         set = function(value, flagName) {
+            if (!localStorageAvailable) {
+                return;
+            }
+
             localStorage.setItem(prefixedKeyFor(flagName), value);
         },
 
         get = function(flagName) {
+            if (!localStorageAvailable) {
+                return null;
+            }
+
             return localStorage.getItem(prefixedKeyFor(flagName));
         },
 
         remove = function(flagName) {
+            if (!localStorageAvailable) {
+                return;
+            }
+
             localStorage.removeItem(prefixedKeyFor(flagName));
         };
 
@@ -37,6 +59,10 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         remove: remove,
         reset: function() {
             var key;
+            if (!localStorageAvailable) {
+                return;
+            }
+
             for (key in localStorage) {
                 if (isPrefixedKey(key)) {
                     localStorage.removeItem(key);
