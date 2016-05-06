@@ -3,7 +3,7 @@
         "key": "activityFeed",
         "environments": {
             "beta": true,
-            "live": false
+            "prod": true
         },
         "name": "Activity Feed",
         "description": "Shows the users activity feed as a stream of events that have occurred."
@@ -12,7 +12,7 @@
         "key": "messages",
         "environments": {
             "beta": true,
-            "live": false
+            "prod": false
         },
         "name": "Messaging",
         "description": "Messaging module that allows users to send and receive messages to one another."
@@ -21,7 +21,7 @@
         "key": "userProfile",
         "environments": {
             "beta": true,
-            "live": false
+            "prod": false
         },
         "name": "User Profile",
         "description": "Displays all the information about the logged in user's profile."
@@ -30,7 +30,7 @@
         "key": "settings",
         "environments": {
             "beta": true,
-            "live": false
+            "prod": false
         },
         "name": "Settings",
         "description": "Configure the user's settings and preferences for the app."

@@ -2,6 +2,10 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
     var serverFlagCache = {},
         flags = [],
 
+        getCachedFlag = function (key) {
+            return serverFlagCache[environment] && serverFlagCache[environment][key];
+        },
+
         resolve = function (val) {
             var deferred = $q.defer();
             deferred.resolve(val);
@@ -13,11 +17,11 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
         },
 
         isOn = function (key) {
-            return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[environment][key];
+            return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : getCachedFlag(key);
         },
 
         isOnByDefault = function (key) {
-            return serverFlagCache[environment][key];
+            return getCachedFlag(key);
         },
 
         updateFlagsAndGetAll = function (newFlags) {
@@ -64,7 +68,7 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
         },
 
         reset = function (flag) {
-            changeEnvironmentVal(flag, serverFlagCache[env][flag.key]);
+            changeEnvironmentVal(flag, getCachedFlag(flag.key));
             featureFlagOverrides.remove(flag.key);
         },
 

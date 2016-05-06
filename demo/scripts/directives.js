@@ -32,7 +32,5 @@ angular.module('my-app')
         };
     })
     .run(function(featureFlags, $http) {
-        $http.get('../data/flags.json').then(function (res) {
-            featureFlags.setInitialFlags(res.data);
-        });
+        featureFlags.set($http.get('../data/flags.json'));
     });
