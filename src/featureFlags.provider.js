@@ -1,69 +1,85 @@
-function FeatureFlags($q, featureFlagOverrides, initialFlags) {
+function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
     var serverFlagCache = {},
         flags = [],
 
-        resolve = function(val) {
+        resolve = function (val) {
             var deferred = $q.defer();
             deferred.resolve(val);
             return deferred.promise;
         },
 
-        isOverridden = function(key) {
+        isOverridden = function (key) {
             return featureFlagOverrides.isPresent(key);
         },
 
-        isOn = function(key) {
-            return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[key];
+        isOn = function (key) {
+            return isOverridden(key) ? featureFlagOverrides.get(key) === 'true' : serverFlagCache[environment][key];
         },
 
-        isOnByDefault = function(key) {
-            return serverFlagCache[key];
+        isOnByDefault = function (key) {
+            return serverFlagCache[environment][key];
         },
 
-        updateFlagsAndGetAll = function(newFlags) {
-            newFlags.forEach(function(flag) {
-                serverFlagCache[flag.key] = flag.active;
-                flag.active = isOn(flag.key);
+        updateFlagsAndGetAll = function (newFlags) {
+            newFlags.forEach(function (flag) {
+                angular.forEach(flag.environments, function (active, env) {
+                    if (!serverFlagCache[env])
+                        serverFlagCache[env] = {};
+                    serverFlagCache[env][flag.key] = active;
+                    flag.environments[env] = isOn(flag.key);
+                });
             });
             angular.copy(newFlags, flags);
 
             return flags;
         },
 
-        updateFlagsWithPromise = function(promise) {
-            return promise.then(function(value) {
+        updateFlagsWithPromise = function (promise) {
+            return promise.then(function (value) {
                 return updateFlagsAndGetAll(value.data || value);
             });
         },
 
-        get = function() {
+        get = function () {
             return flags;
         },
 
-        set = function(newFlags) {
+        set = function (newFlags) {
             return angular.isArray(newFlags) ? resolve(updateFlagsAndGetAll(newFlags)) : updateFlagsWithPromise(newFlags);
         },
 
-        enable = function(flag) {
-            flag.active = true;
+        setEnvironment = function (value) {
+            environment = value;
+            featureFlagOverrides.setEnvironment(value);
+        },
+
+        enable = function (flag) {
+            changeEnvironmentVal(flag, true);
             featureFlagOverrides.set(flag.key, true);
         },
 
-        disable = function(flag) {
-            flag.active = false;
+        disable = function (flag) {
+            changeEnvironmentVal(flag, false);
             featureFlagOverrides.set(flag.key, false);
         },
 
-        reset = function(flag) {
-            flag.active = serverFlagCache[flag.key];
+        reset = function (flag) {
+            changeEnvironmentVal(flag, serverFlagCache[env][flag.key]);
             featureFlagOverrides.remove(flag.key);
         },
 
-        init = function() {
+        init = function () {
             if (initialFlags) {
                 set(initialFlags);
             }
         };
+
+    function changeEnvironmentVal(flag, value) {
+        Object.keys(flag.environments).forEach(function (env) {
+            flag.environments[env] = value;
+        })
+    }
+
     init();
 
     return {
@@ -74,18 +90,25 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
         reset: reset,
         isOn: isOn,
         isOnByDefault: isOnByDefault,
-        isOverridden: isOverridden
+        isOverridden: isOverridden,
+        setEnvironment: setEnvironment
     };
 }
 
-angular.module('feature-flags').provider('featureFlags', function() {
+angular.module('feature-flags').provider('featureFlags', function () {
     var initialFlags = [];
+    var environment = 'prod';
 
-    this.setInitialFlags = function(flags) {
+    this.setInitialFlags = function (flags) {
         initialFlags = flags;
     };
 
-    this.$get = function($q, featureFlagOverrides) {
-        return new FeatureFlags($q, featureFlagOverrides, initialFlags);
+    this.setEnvironment = function (env) {
+        environment = env;
+    };
+
+    this.$get = function ($q, featureFlagOverrides) {
+        featureFlagOverrides.setEnvironment(environment);
+        return new FeatureFlags($q, featureFlagOverrides, initialFlags, environment);
     };
 });
