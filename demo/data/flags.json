@@ -20,7 +20,7 @@
     {
         "key": "userProfile",
         "environments": {
-            "beta": true,
+            "beta": false,
             "prod": false
         },
         "name": "User Profile",
@@ -29,8 +29,8 @@
     {
         "key": "settings",
         "environments": {
-            "beta": true,
-            "prod": false
+            "beta": false,
+            "prod": true
         },
         "name": "Settings",
         "description": "Configure the user's settings and preferences for the app."
