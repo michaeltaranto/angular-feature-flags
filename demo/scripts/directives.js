@@ -32,6 +32,6 @@ angular.module('my-app')
         };
     })
     .run(function(featureFlags, $http) {
-        featureFlags.setEnvironment("prod");
+        featureFlags.setEnvironment('prod');
         featureFlags.set($http.get('../data/flags.json'));
     });

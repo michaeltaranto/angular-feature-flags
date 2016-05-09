@@ -1,5 +1,5 @@
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-    var keyPrefix = "",
+    var keyPrefix = '',
         appName = $rootElement.attr('ng-app'),
 
         prefixedKeyFor = function(flagName) {
