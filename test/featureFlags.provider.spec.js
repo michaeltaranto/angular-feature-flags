@@ -108,15 +108,11 @@
             beforeEach(function() {
                 spyOn(featureFlagOverrides, 'set');
                 featureFlags.setEnvironment('beta');
-                featureFlags.enable(flag);
+                featureFlags.enable(flag.key);
             });
 
             it('should set the flag with the correct name and value', function() {
                 expect(featureFlagOverrides.set).toHaveBeenCalledWith(flag.key, true);
-            });
-
-            it('should set the flag to true', function() {
-                expect(flag.environments.beta).toBe(true);
             });
         });
 
@@ -126,15 +122,11 @@
             beforeEach(function() {
                 spyOn(featureFlagOverrides, 'set');
                 featureFlags.setEnvironment('beta');
-                featureFlags.disable(flag);
+                featureFlags.disable(flag.key);
             });
 
             it('should set the flag with the correct name and value', function() {
                 expect(featureFlagOverrides.set).toHaveBeenCalledWith(flag.key, false);
-            });
-
-            it('should set the flag as inactive', function() {
-                expect(flag.environments.beta).toBe(false);
             });
         });
 
@@ -149,18 +141,14 @@
                 featureFlags.setEnvironment('beta');
 
                 spyOn(featureFlagOverrides, 'set');
-                featureFlags.disable(flag);
+                featureFlags.disable(flag.key);
 
                 spyOn(featureFlagOverrides, 'remove');
-                featureFlags.reset(flag);
+                featureFlags.reset(flag.key);
             });
 
             it('should remove the flag', function() {
                 expect(featureFlagOverrides.remove).toHaveBeenCalledWith(flag.key);
-            });
-
-            it('should reset the flag to the default value', function() {
-                expect(flag.environments.beta).toBe(originalFlagValue);
             });
         });
 
@@ -205,9 +193,9 @@
             });
 
             beforeEach(function() {
-//                featureFlags.disable(onFlagOverridden);
-//                featureFlags.enable(offFlagOverridden);
-                featureFlags.enable(undefinedFlagOverridden);
+                featureFlags.disable(onFlagOverridden.key);
+                featureFlags.enable(offFlagOverridden.key);
+                featureFlags.enable(undefinedFlagOverridden.key);
             });
 
             afterEach(function() {
@@ -228,17 +216,14 @@
             });
 
             it('should report feature is on by default when it is even when disabled', function() {
-                featureFlags.disable(onFlagOverridden);
                 expect(featureFlags.isOnByDefault(onFlagOverridden.key)).toBe(true);
             });
 
             it('should report feature is off by default when it is even when enabled', function() {
-                featureFlags.enable(offFlagOverridden);
                 expect(featureFlags.isOnByDefault(offFlagOverridden.key)).toBe(false);
             });
 
             it('should return undefined if the key was not loaded by set() even when enabled', function() {
-                featureFlags.enable(undefinedFlagOverridden);
                 expect(typeof featureFlags.isOnByDefault(undefinedFlagOverridden.key)).toBe('undefined');
             });
         });

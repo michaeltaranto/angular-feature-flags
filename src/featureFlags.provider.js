@@ -26,7 +26,8 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
         },
 
         updateFlagsAndGetAll = function(newFlags) {
-            newFlags.forEach(function(flag) {
+            angular.copy(newFlags, flags);
+            flags.forEach(function(flag) {
                 angular.forEach(flag.environments, function(active, env) {
                     if (!serverFlagCache[env]) {
                         serverFlagCache[env] = {};
@@ -35,8 +36,6 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
                     flag.environments[env] = isOn(flag.key);
                 });
             });
-            angular.copy(newFlags, flags);
-
             return flags;
         },
 
@@ -59,25 +58,16 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
             featureFlagOverrides.setEnvironment(value);
         },
 
-        changeEnvironmentVal = function(flag, value) {
-            Object.keys(flag.environments).forEach(function(env) {
-                flag.environments[env] = value;
-            });
-        },
-
         enable = function(flag) {
-            changeEnvironmentVal(flag, true);
-            featureFlagOverrides.set(flag.key, true);
+            featureFlagOverrides.set(flag, true);
         },
 
         disable = function(flag) {
-            changeEnvironmentVal(flag, false);
-            featureFlagOverrides.set(flag.key, false);
+            featureFlagOverrides.set(flag, false);
         },
 
         reset = function(flag) {
-            changeEnvironmentVal(flag, getCachedFlag(flag.key));
-            featureFlagOverrides.remove(flag.key);
+            featureFlagOverrides.remove(flag);
         },
 
         init = function() {
