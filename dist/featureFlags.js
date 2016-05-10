@@ -66,9 +66,9 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
                   '    <h1>Feature Flags</h1>' +
                   '    <div id="feature-flag--{{flag.key}}" class="feature-flags-flag" ng-repeat="flag in flags">' +
                   '        <div class="feature-flags-name">{{flag.name || flag.key}}</div>' +
-                  '        <div id="feature-flag--{{flag.key}}--enable" class="feature-flags-switch" ng-click="enable(flag)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>' +
-                  '        <div id="feature-flag--{{flag.key}}--disable" class="feature-flags-switch" ng-click="disable(flag)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>' +
-                  '        <div id="feature-flag--{{flag.key}}--reset" class="feature-flags-switch" ng-click="reset(flag)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{isOnByDefault(flag.key) ? \'ON\' : \'OFF\'}})</div>' +
+                  '        <div id="feature-flag--{{flag.key}}--enable" class="feature-flags-switch" ng-click="enable(flag.key)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>' +
+                  '        <div id="feature-flag--{{flag.key}}--disable" class="feature-flags-switch" ng-click="disable(flag.key)" ng-class="{\'active\': isOverridden(flag.key) && !isOn(flag.key)}">OFF</div>' +
+                  '        <div id="feature-flag--{{flag.key}}--reset" class="feature-flags-switch" ng-click="reset(flag.key)" ng-class="{\'active\': !isOverridden(flag.key)}">DEFAULT ({{isOnByDefault(flag.key) ? \'ON\' : \'OFF\'}})</div>' +
                   '        <div class="feature-flags-desc">{{flag.description}}</div>' +
                   '    </div>' +
                   '</div>',
@@ -157,7 +157,8 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
         },
 
         updateFlagsAndGetAll = function(newFlags) {
-            newFlags.forEach(function(flag) {
+            angular.copy(newFlags, flags);
+            flags.forEach(function(flag) {
                 angular.forEach(flag.environments, function(active, env) {
                     if (!serverFlagCache[env]) {
                         serverFlagCache[env] = {};
@@ -166,8 +167,6 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
                     flag.environments[env] = isOn(flag.key);
                 });
             });
-            angular.copy(newFlags, flags);
-
             return flags;
         },
 
@@ -190,25 +189,16 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags, environment) {
             featureFlagOverrides.setEnvironment(value);
         },
 
-        changeEnvironmentVal = function(flag, value) {
-            Object.keys(flag.environments).forEach(function(env) {
-                flag.environments[env] = value;
-            });
-        },
-
         enable = function(flag) {
-            changeEnvironmentVal(flag, true);
-            featureFlagOverrides.set(flag.key, true);
+            featureFlagOverrides.set(flag, true);
         },
 
         disable = function(flag) {
-            changeEnvironmentVal(flag, false);
-            featureFlagOverrides.set(flag.key, false);
+            featureFlagOverrides.set(flag, false);
         },
 
         reset = function(flag) {
-            changeEnvironmentVal(flag, getCachedFlag(flag.key));
-            featureFlagOverrides.remove(flag.key);
+            featureFlagOverrides.remove(flag);
         },
 
         init = function() {
