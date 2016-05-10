@@ -1,6 +1,6 @@
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-    var appName = $rootElement.attr('ng-app'),
-        keyPrefix = 'featureFlags.' + appName + '.',
+    var keyPrefix = '',
+        appName = $rootElement.attr('ng-app'),
 
         prefixedKeyFor = function(flagName) {
             return keyPrefix + flagName;
@@ -8,6 +8,10 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
 
         isPrefixedKey = function(key) {
             return key.indexOf(keyPrefix) === 0;
+        },
+
+        setEnvironment = function(value) {
+            keyPrefix = 'featureFlags.' + appName + '.' + value + '.';
         },
 
         set = function(value, flagName) {
@@ -26,6 +30,7 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         isPresent: function(key) {
             return get(key) !== null;
         },
+        setEnvironment: setEnvironment,
         get: get,
         set: function(flag, value) {
             if (angular.isObject(flag)) {
