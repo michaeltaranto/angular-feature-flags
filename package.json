@@ -1,7 +1,7 @@
 {
   "name": "angular-feature-flags",
   "title": "Angular Feature Flags",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Feature Flag module for Angular JS apps",
   "keywords": [
     "angular",
