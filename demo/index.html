@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="vendor/angular.min.js"></script>
-    <script>
-        angular.module('my-app', [ 'feature-flags' ]);
-    </script>
-    <script src="scripts/directives.js"></script>
-    <script src="scripts/featureFlags.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <script src="vendor/angular.min.js"></script>
+  <script>
+    angular.module('my-app', ['feature-flags']);
+  </script>
+  <script src="scripts/directives.js"></script>
+  <script src="scripts/featureFlags.min.js"></script>
 </head>
+
 <body ng-app="my-app" ng-class="{ toggle: showFlags }" ng-cloak>
-    <div class="toggles" ng-click="showFlags=!showFlags"></div>
-    <div class="main" ng-click="showFlags=false">
-        <h1>My App</h1>
-        <div activity-feed feature-flag="activityFeed"></div>
-        <div messaging feature-flag="messages"></div>
-        <div user-profile feature-flag="userProfile"></div>
-        <div settings feature-flag="settings"></div>
-    </div>
-    <div class="flagContainer" feature-flag-overrides></div>
+  <div class="toggles" ng-click="showFlags=!showFlags"></div>
+  <div class="main" ng-click="showFlags=false">
+    <h1>My App</h1>
+    <div activity-feed feature-flag="activityFeed"></div>
+    <div messaging feature-flag="messages"></div>
+    <div user-profile feature-flag="userProfile"></div>
+    <div settings feature-flag="settings"></div>
+  </div>
+  <div class="flagContainer" feature-flag-overrides></div>
 </body>
+
 </html>
