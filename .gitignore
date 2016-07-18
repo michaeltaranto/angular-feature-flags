@@ -1,7 +1,6 @@
 node_modules
 test/coverage
 demo/scripts/featureFlags.min.js
-dist
 .idea
 bower_components
 coverage
