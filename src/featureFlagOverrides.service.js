@@ -2,6 +2,16 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
     var appName = $rootElement.attr('ng-app'),
         keyPrefix = 'featureFlags.' + appName + '.',
 
+        localStorageAvailable = (function() {
+            try {
+                localStorage.setItem('featureFlags.availableTest', 'test');
+                localStorage.removeItem('featureFlags.availableTest');
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }()),
+
         prefixedKeyFor = function(flagName) {
             return keyPrefix + flagName;
         },
@@ -11,15 +21,21 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         },
 
         set = function(value, flagName) {
-            localStorage.setItem(prefixedKeyFor(flagName), value);
+            if (localStorageAvailable) {
+                localStorage.setItem(prefixedKeyFor(flagName), value);
+            }
         },
 
         get = function(flagName) {
-            return localStorage.getItem(prefixedKeyFor(flagName));
+            if (localStorageAvailable) {
+                return localStorage.getItem(prefixedKeyFor(flagName));
+            }
         },
 
         remove = function(flagName) {
-            localStorage.removeItem(prefixedKeyFor(flagName));
+            if (localStorageAvailable) {
+                localStorage.removeItem(prefixedKeyFor(flagName));
+            }
         };
 
     return {
@@ -37,9 +53,11 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         remove: remove,
         reset: function() {
             var key;
-            for (key in localStorage) {
-                if (isPrefixedKey(key)) {
-                    localStorage.removeItem(key);
+            if (localStorageAvailable) {
+                for (key in localStorage) {
+                    if (isPrefixedKey(key)) {
+                        localStorage.removeItem(key);
+                    }
                 }
             }
         }

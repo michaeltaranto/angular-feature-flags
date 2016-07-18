@@ -81,7 +81,7 @@ gulp.task('test', ['clean'], function() {
 gulp.task('clean', function() {
     return gulp.src('test/coverage')
         .pipe(clean());
-})
+});
 
 
 gulp.task('coveralls', ['test'], function() {
