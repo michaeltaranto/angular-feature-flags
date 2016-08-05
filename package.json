@@ -3,6 +3,7 @@
   "title": "Angular Feature Flags",
   "version": "1.2.2",
   "description": "Feature Flag module for Angular JS apps",
+  "main": "dist/featureFlags.js",
   "keywords": [
     "angular",
     "feature flag",
