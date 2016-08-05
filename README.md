@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/mjt01/angular-feature-flags.png?branch=master)](https://travis-ci.org/mjt01/angular-feature-flags)
-[![Coverage Status](https://coveralls.io/repos/mjt01/angular-feature-flags/badge.png)](https://coveralls.io/r/mjt01/angular-feature-flags)
+[![Build Status](https://img.shields.io/travis/mjt01/angular-feature-flags/master.svg?style=flat-square)](https://travis-ci.org/mjt01/angular-feature-flags)
+[![Coverage Status](https://img.shields.io/coveralls/mjt01/angular-feature-flags.svg?style=flat-square)](https://coveralls.io/github/mjt01/angular-feature-flags?branch=master)
+[![npm](https://img.shields.io/npm/v/angular-feature-flags.svg?style=flat-square)](https://www.npmjs.com/package/angular-feature-flags)
 ## angular-feature-flags
 
 An AngularJS module that allows you to control when you release new features in your app by putting them behind feature flags/switches. **This module only supports Angular v1.2 and up.**
