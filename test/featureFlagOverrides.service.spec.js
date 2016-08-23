@@ -178,5 +178,11 @@
         expect(localStorage.removeItem).not.toHaveBeenCalled();
       });
     });
+
+    describe('when I check the state of an override', function() {
+      it('should return false', function() {
+        expect(service.isPresent('FLAG_KEY')).toBeFalsy();
+      });
+    });
   });
 }(window.angular));

@@ -40,7 +40,8 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
 
   return {
     isPresent: function(key) {
-      return get(key) !== null;
+      var value = get(key);
+      return typeof value !== 'undefined' && value !== null;
     },
     get: get,
     set: function(flag, value) {
