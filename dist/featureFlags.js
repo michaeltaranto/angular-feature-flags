@@ -1,5 +1,5 @@
 /*!
- * Angular Feature Flags v1.3.0
+ * Angular Feature Flags v1.4.0
  *
  * © 2016, Michael Taranto
  */
@@ -118,7 +118,8 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
 
   return {
     isPresent: function(key) {
-      return get(key) !== null;
+      var value = get(key);
+      return typeof value !== 'undefined' && value !== null;
     },
     get: get,
     set: function(flag, value) {
