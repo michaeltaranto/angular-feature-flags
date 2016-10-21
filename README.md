@@ -56,6 +56,8 @@ Flag data can be set via the `featureFlags` service using the `set` method. This
 For example, if you were loading your flag data from a remote JSON file:
 
 ```js
+var myApp = angular.module('app', ['feature-flags']);
+
 myApp.run(function(featureFlags, $http) {
   featureFlags.set($http.get('/data/flags.json'));
 });
@@ -66,6 +68,8 @@ myApp.run(function(featureFlags, $http) {
 From version v1.1.0 you can also initialize the feature flags in the config phase of your application:
 
 ```js
+var myApp = angular.module('app', ['feature-flags']);
+
 myApp.config(function(featureFlagsProvider) {
   featureFlagsProvider.setInitialFlags([
     { "key": "...", "active": "...", "name": "...", "description": "..." },
