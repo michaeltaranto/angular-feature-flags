@@ -10,21 +10,26 @@ module.exports = function(config) {
     plugins: [
       require('karma-coverage'),
       require('karma-jasmine'),
-      require('karma-phantomjs-launcher')
+      require('karma-phantomjs-launcher'),
+      require('karma-mocha-reporter')
     ],
     browsers: ['PhantomJS'],
-    reporters: ['dots', 'coverage'],
+    reporters: ['mocha', 'coverage'],
     preprocessors: {
       'src/*.js': ['coverage']
     },
     coverageReporter: {
-      reporters: [{
-        type: 'html',
-        dir: 'test/coverage/'
-      }, {
-        type: 'lcov',
-        dir: 'test/coverage/'
-      }]
+      reporters: [
+        { type: 'text-summary' },
+        {
+          type: 'html',
+          dir: 'test/coverage/'
+        },
+        {
+          type: 'lcov',
+          dir: 'test/coverage/'
+        }
+      ]
     },
     singleRun: true
   });
