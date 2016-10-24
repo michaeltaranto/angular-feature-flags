@@ -12,44 +12,18 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   clean = require('gulp-clean'),
   ngannotate = require('gulp-ng-annotate'),
-  karma = require('gulp-karma'),
   ghpages = require('gh-pages'),
   path = require('path'),
   gutil = require('gulp-util'),
   coveralls = require('gulp-coveralls'),
   pkg = require('./package.json'),
+  karmaServer = require('karma').Server;
 
   //--------------------------------
   //  HELPERS
   //--------------------------------
-  karmaConfig = function(action) {
-    return {
-      frameworks: ['jasmine'],
-      browsers: ['PhantomJS'],
-      reporters: ['progress', 'coverage'],
-      preprocessors: {
-        'src/*.js': ['coverage']
-      },
-      coverageReporter: {
-        reporters: [{
-          type: 'html',
-          dir: 'test/coverage/'
-        }, {
-          type: 'lcov',
-          dir: 'test/coverage/'
-        }]
-      },
-      action: action
-    };
-  },
   TEST_FILES = 'test/**/*.spec.js',
   SRC_FILES = 'src/*.js',
-  KARMA_FILES = [
-    'demo/vendor/angular.min.js',
-    'test/vendor/angular-mocks.js',
-    SRC_FILES,
-    TEST_FILES
-  ],
   PORT = 9999;
 
 //--------------------------------
@@ -69,12 +43,8 @@ gulp.task('lint', function() {
     .pipe(eslint.failOnError());
 });
 
-gulp.task('test', ['clean'], function() {
-  return gulp.src(KARMA_FILES)
-    .pipe(karma(karmaConfig('run')))
-    .on('error', function(err) {
-      throw err;
-    });
+gulp.task('test', ['clean'], function(done) {
+  return runKarma(done);
 });
 
 gulp.task('clean', function() {
@@ -133,8 +103,7 @@ gulp.task('dev', ['build', 'server'], function() {
   gulp.watch(['demo/**/*.*'], ['reload']);
   gulp.watch(['demo/scripts/*.js', TEST_FILES], ['lint']);
   gulp.watch(SRC_FILES, ['lint', 'build']);
-  gulp.src(KARMA_FILES)
-    .pipe(karma(karmaConfig('watch')));
+  runKarma();
 });
 
 gulp.task('deploy', ['build'], function(done) {
@@ -146,3 +115,13 @@ gulp.task('deploy', ['build'], function(done) {
 gulp.task('precommit', ['lint', 'test', 'build']);
 gulp.task('demo', ['build', 'server']);
 gulp.task('default', ['precommit']);
+
+function runKarma(done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.conf.js'
+  }, function() {
+    if (done) {
+      done();
+    }
+  }).start();
+}

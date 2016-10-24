@@ -122,9 +122,10 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
     var name = prefix + 'app';
     if (!appName && $rootElement.attr(name)) {
       appName = $rootElement.attr(name);
-      keyPrefix = 'featureFlags.' + appName + '.';
     }
   });
+
+  keyPrefix = 'featureFlags.' + appName + '.';
 
   return {
     isPresent: function(key) {

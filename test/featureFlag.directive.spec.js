@@ -23,7 +23,7 @@
       describe('when the feature flag', function() {
         describe('is on', function() {
           beforeEach(function() {
-            flagCheck.andReturn(true);
+            flagCheck.and.returnValue(true);
             $scope.$digest();
           });
 
@@ -34,7 +34,7 @@
 
         describe('is off', function() {
           beforeEach(function() {
-            flagCheck.andReturn(false);
+            flagCheck.and.returnValue(false);
             $scope.$digest();
           });
 
@@ -48,9 +48,9 @@
 
       describe('when i toggle it on and off again', function() {
         beforeEach(function() {
-          flagCheck.andReturn(true);
+          flagCheck.and.returnValue(true);
           $scope.$digest();
-          flagCheck.andReturn(false);
+          flagCheck.and.returnValue(false);
           $scope.$digest();
         });
 
@@ -100,7 +100,7 @@
       describe('when the feature flag', function() {
         describe('is on', function() {
           beforeEach(function() {
-            flagCheck.andReturn(true);
+            flagCheck.and.returnValue(true);
             $scope.$digest();
           });
 
@@ -113,7 +113,7 @@
 
         describe('is off', function() {
           beforeEach(function() {
-            flagCheck.andReturn(false);
+            flagCheck.and.returnValue(false);
             $scope.$digest();
           });
 
@@ -125,9 +125,9 @@
 
       describe('when i toggle it on and off again', function() {
         beforeEach(function() {
-          flagCheck.andReturn(true);
+          flagCheck.and.returnValue(true);
           $scope.$digest();
-          flagCheck.andReturn(false);
+          flagCheck.and.returnValue(false);
           $scope.$digest();
         });
 
