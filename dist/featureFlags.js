@@ -77,7 +77,7 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
 }]);
 
 angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', function($rootElement) {
-  var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-'],
+  var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-', ''],
     appName,
     keyPrefix,
 

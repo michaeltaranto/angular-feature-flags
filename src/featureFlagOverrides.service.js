@@ -1,5 +1,5 @@
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-  var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-'],
+  var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-', ''],
     appName,
     keyPrefix,
 

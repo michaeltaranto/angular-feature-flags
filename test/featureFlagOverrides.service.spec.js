@@ -3,12 +3,15 @@
 
   var module = angular.mock.module,
     inject = angular.mock.inject,
-    appName = 'undefined';
+    appName = 'undefined',
+    $rootElement = angular.element('<div ng-app="' + appName + '" />');
 
   describe('Service: featureFlagOverrides', function() {
     var service;
 
-    beforeEach(module('feature-flags'));
+    beforeEach(module('feature-flags', function($provide) {
+      $provide.value('$rootElement', $rootElement);
+    }));
 
     beforeEach(inject(function(_featureFlagOverrides_) {
       service = _featureFlagOverrides_;
