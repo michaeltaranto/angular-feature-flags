@@ -1,6 +1,7 @@
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-  var appName = $rootElement.attr('ng-app'),
-    keyPrefix = 'featureFlags.' + appName + '.',
+  var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-', ''],
+    appName,
+    keyPrefix,
 
     localStorageAvailable = (function() {
       try {
@@ -37,6 +38,16 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
         localStorage.removeItem(prefixedKeyFor(flagName));
       }
     };
+
+  // Need to find the appName for the angular specific prefixes
+  angular.forEach(ngAttrPrefixes, function(prefix) {
+    var name = prefix + 'app';
+    if (!appName && $rootElement.attr(name)) {
+      appName = $rootElement.attr(name);
+    }
+  });
+
+  keyPrefix = 'featureFlags.' + appName + '.';
 
   return {
     isPresent: function(key) {

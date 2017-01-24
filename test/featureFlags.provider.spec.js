@@ -187,7 +187,7 @@
 
       describe('if there is', function() {
         beforeEach(function() {
-          spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
+          spyOn(featureFlagOverrides, 'isPresent').and.returnValue(true);
         });
 
         it('should return true when there is', function() {
@@ -197,7 +197,7 @@
 
       describe('if there is not', function() {
         beforeEach(function() {
-          spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
+          spyOn(featureFlagOverrides, 'isPresent').and.returnValue(false);
         });
 
         it('should return true when there is', function() {
@@ -230,10 +230,10 @@
         key: 'FLAG_UNDEFINED_OVERRIDDEN'
       };
 
-      beforeEach(function(done) {
+      beforeEach(function() {
         var flagsToLoad = [onFlag, offFlag, onFlagOverridden, offFlagOverridden];
         $httpBackend.when('GET', 'data/flags.json').respond(flagsToLoad);
-        featureFlags.set($http.get('data/flags.json')).finally(done);
+        featureFlags.set($http.get('data/flags.json'));
         $httpBackend.flush();
       });
 
@@ -293,8 +293,8 @@
 
         describe('and there is a local override to turn it on', function() {
           beforeEach(function() {
-            spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
-            spyOn(featureFlagOverrides, 'get').andReturn('true');
+            spyOn(featureFlagOverrides, 'isPresent').and.returnValue(true);
+            spyOn(featureFlagOverrides, 'get').and.returnValue('true');
           });
 
           it('should report the feature as being on', function() {
@@ -304,7 +304,7 @@
 
         describe('and there is no local override to turn it on', function() {
           beforeEach(function() {
-            spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
+            spyOn(featureFlagOverrides, 'isPresent').and.returnValue(false);
           });
 
           it('should report the feature as being off', function() {
@@ -332,8 +332,8 @@
 
         describe('and there is a local override to turn it off', function() {
           beforeEach(function() {
-            spyOn(featureFlagOverrides, 'isPresent').andReturn(true);
-            spyOn(featureFlagOverrides, 'get').andReturn('false');
+            spyOn(featureFlagOverrides, 'isPresent').and.returnValue(true);
+            spyOn(featureFlagOverrides, 'get').and.returnValue('false');
           });
 
           it('should report the feature as being off', function() {
@@ -343,7 +343,7 @@
 
         describe('and there is no local override to turn it off', function() {
           beforeEach(function() {
-            spyOn(featureFlagOverrides, 'isPresent').andReturn(false);
+            spyOn(featureFlagOverrides, 'isPresent').and.returnValue(false);
           });
 
           it('should report the feature as being on', function() {

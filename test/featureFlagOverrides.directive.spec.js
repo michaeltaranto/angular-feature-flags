@@ -17,7 +17,7 @@
       spyOn(featureFlags, 'enable');
       spyOn(featureFlags, 'disable');
       spyOn(featureFlags, 'reset');
-      spyOn(featureFlags, 'get').andReturn('FLAGS_ARRAY');
+      spyOn(featureFlags, 'get').and.returnValue('FLAGS_ARRAY');
 
       container = angular.element('<div feature-flag-overrides></div>');
       $compile(container)($scope);
