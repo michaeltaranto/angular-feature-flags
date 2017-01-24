@@ -352,6 +352,28 @@
         });
       });
     });
+
+    describe('when I enable a flag and then set the list of flags with the same flag', function() {
+      var flagKey = 'FLAG_KEY';
+      var onFlag = {
+        active: true,
+        key: flagKey
+      };
+      var offFlag = {
+        active: false,
+        key: flagKey
+      };
+
+      beforeEach(function() {
+        featureFlags.enable(onFlag);
+
+        featureFlags.set([offFlag]);
+      });
+
+      it('should override previous flag value', function() {
+        expect(featureFlags.isOn(flagKey)).toBe(false);
+      });
+    });
   });
 
   describe('Provider: featureFlags', function() {
