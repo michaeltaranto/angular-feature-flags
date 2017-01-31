@@ -23,7 +23,6 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
     updateFlagsAndGetAll = function(newFlags) {
       newFlags.forEach(function(flag) {
         serverFlagCache[flag.key] = flag.active;
-        featureFlagOverrides.set(flag.key, flag.active);
         flag.active = isOn(flag.key);
       });
       angular.copy(newFlags, flags);
