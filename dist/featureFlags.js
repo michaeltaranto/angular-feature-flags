@@ -1,5 +1,5 @@
 /*!
- * Angular Feature Flags v1.5.0
+ * Angular Feature Flags v1.6.0
  *
  * © 2017, Michael Taranto
  */
@@ -168,7 +168,6 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
     updateFlagsAndGetAll = function(newFlags) {
       newFlags.forEach(function(flag) {
         serverFlagCache[flag.key] = flag.active;
-        featureFlagOverrides.set(flag.key, flag.active);
         flag.active = isOn(flag.key);
       });
       angular.copy(newFlags, flags);
