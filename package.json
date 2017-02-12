@@ -1,9 +1,9 @@
 {
   "name": "angular-feature-flags",
   "title": "Angular Feature Flags",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Feature Flag module for Angular JS apps",
-  "main": "dist/featureFlags.js",
+  "main": "index.js",
   "keywords": [
     "angular",
     "feature flag",
