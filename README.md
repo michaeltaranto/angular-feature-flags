@@ -1,5 +1,5 @@
-[![Build Status](https://img.shields.io/travis/mjt01/angular-feature-flags/master.svg?style=flat-square)](https://travis-ci.org/mjt01/angular-feature-flags)
-[![Coverage Status](https://img.shields.io/coveralls/mjt01/angular-feature-flags.svg?style=flat-square)](https://coveralls.io/github/mjt01/angular-feature-flags?branch=master)
+[![Build Status](https://img.shields.io/travis/michaeltaranto/angular-feature-flags/master.svg?style=flat-square)](https://travis-ci.org/michaeltaranto/angular-feature-flags)
+[![Coverage Status](https://img.shields.io/coveralls/michaeltaranto/angular-feature-flags.svg?style=flat-square)](https://coveralls.io/github/michaeltaranto/angular-feature-flags?branch=master)
 [![npm](https://img.shields.io/npm/v/angular-feature-flags.svg?style=flat-square)](https://www.npmjs.com/package/angular-feature-flags)
 
 ## angular-feature-flags
@@ -118,4 +118,4 @@ This relies on Gulp also obviously, to run the test suite:
 
 ## License
 
-[MIT](http://mjt01.mit-license.org)
+[MIT](http://michaeltaranto.mit-license.org)
