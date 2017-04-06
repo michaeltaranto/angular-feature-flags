@@ -372,7 +372,7 @@
             $get: function() {
               return {
                 getInitialFlags: function() {
-                  return [];
+                  return null;
                 },
                 getAppName: function() {
                   return appName;
