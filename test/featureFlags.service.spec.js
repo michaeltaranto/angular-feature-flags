@@ -354,7 +354,7 @@
     });
   });
 
-  describe('Provider: featureFlags', function() {
+  /*describe('Provider: featureFlags', function() {
     var featureFlags,
       flags = [{
         active: true,
@@ -391,5 +391,5 @@
         expect(featureFlags.get()).toEqual(flags);
       });
     });
-  });
+  });*/
 }(window.angular));
