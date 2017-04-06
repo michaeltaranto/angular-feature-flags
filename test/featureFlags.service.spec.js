@@ -354,7 +354,7 @@
     });
   });
 
-  /*describe('Provider: featureFlags', function() {
+  describe('Service with provider config: featureFlags', function() {
     var featureFlags,
       flags = [{
         active: true,
@@ -362,11 +362,25 @@
       }, {
         active: false,
         key: 'FLAG_KEY_2'
-      }];
+      }],
+      appName = 'myapp';
 
     describe('When no flags are set in the config phase', function() {
-      beforeEach(module('feature-flags', function(featureFlagsProvider) {
-        featureFlagsProvider.setInitialFlags(null);
+      beforeEach(module('feature-flags', function($provide) {
+        $provide.provider('featureFlagConfig', function() {
+          return {
+            $get: function() {
+              return {
+                getInitialFlags: function() {
+                  return [];
+                },
+                getAppName: function() {
+                  return appName;
+                }
+              };
+            }
+          };
+        });
       }));
 
       beforeEach(inject(function(_featureFlags_) {
@@ -379,8 +393,21 @@
     });
 
     describe('When flags are set in the config phase', function() {
-      beforeEach(module('feature-flags', function(featureFlagsProvider) {
-        featureFlagsProvider.setInitialFlags(flags);
+      beforeEach(module('feature-flags', function($provide) {
+        $provide.provider('featureFlagConfig', function() {
+          return {
+            $get: function() {
+              return {
+                getInitialFlags: function() {
+                  return flags;
+                },
+                getAppName: function() {
+                  return appName;
+                }
+              };
+            }
+          };
+        });
       }));
 
       beforeEach(inject(function(_featureFlags_) {
@@ -391,5 +418,5 @@
         expect(featureFlags.get()).toEqual(flags);
       });
     });
-  });*/
+  });
 }(window.angular));
