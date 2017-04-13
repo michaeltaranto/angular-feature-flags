@@ -22,5 +22,11 @@
     "active": false,
     "name": "Settings",
     "description": "Configure the user's settings and preferences for the app."
+  },
+  {
+    "key": "code",
+    "active": true,
+    "name": "Code",
+    "description": "Code based flag"
   }
 ]
