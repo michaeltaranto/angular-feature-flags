@@ -1,4 +1,4 @@
-function FeatureFlags($q, featureFlagOverrides, initialFlags) {
+angular.module('feature-flags').service('featureFlags', function($q, featureFlagOverrides, featureFlagConfig) {
   var serverFlagCache = {},
     flags = [],
 
@@ -60,8 +60,9 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
     },
 
     init = function() {
-      if (initialFlags) {
-        set(initialFlags);
+      var iniFlags = featureFlagConfig.getInitialFlags();
+      if (iniFlags) {
+        set(iniFlags);
       }
     };
   init();
@@ -75,17 +76,5 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
     isOn: isOn,
     isOnByDefault: isOnByDefault,
     isOverridden: isOverridden
-  };
-}
-
-angular.module('feature-flags').provider('featureFlags', function() {
-  var initialFlags = [];
-
-  this.setInitialFlags = function(flags) {
-    initialFlags = flags;
-  };
-
-  this.$get = function($q, featureFlagOverrides) {
-    return new FeatureFlags($q, featureFlagOverrides, initialFlags);
   };
 });

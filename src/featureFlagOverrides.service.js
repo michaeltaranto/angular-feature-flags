@@ -1,7 +1,5 @@
-angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-  var appName = $rootElement.attr('ng-app'),
-    keyPrefix = 'featureFlags.' + appName + '.',
-
+angular.module('feature-flags').service('featureFlagOverrides', function($rootElement, featureFlagConfig) {
+  var keyPrefix = 'featureFlags.',
     localStorageAvailable = (function() {
       try {
         localStorage.setItem('featureFlags.availableTest', 'test');
@@ -38,6 +36,9 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
       }
     };
 
+  if (featureFlagConfig.getAppName().length > 0) {
+    keyPrefix += featureFlagConfig.getAppName() + '.';
+  }
   return {
     isPresent: function(key) {
       var value = get(key);

@@ -5,9 +5,21 @@
     inject = angular.mock.inject;
 
   describe('Service: featureFlagOverrides', function() {
-    var service, appName = '';
+    var service, appName = 'myapp';
 
-    beforeEach(module('feature-flags'));
+    beforeEach(module('feature-flags', function($provide) {
+      $provide.provider('featureFlagConfig', function() {
+        return {
+          $get: function() {
+            return {
+              getAppName: function() {
+                return appName;
+              }
+            };
+          }
+        };
+      });
+    }));
 
     beforeEach(inject(function(featureFlagOverrides) {
       service = featureFlagOverrides;
