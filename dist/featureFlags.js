@@ -76,10 +76,8 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
   };
 }]);
 
-angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', function($rootElement) {
-  var appName = $rootElement.attr('ng-app'),
-    keyPrefix = 'featureFlags.' + appName + '.',
-
+angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement', 'featureFlagConfig', function($rootElement, featureFlagConfig) {
+  var keyPrefix = 'featureFlags.',
     localStorageAvailable = (function() {
       try {
         localStorage.setItem('featureFlags.availableTest', 'test');
@@ -116,6 +114,9 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
       }
     };
 
+  if (featureFlagConfig.getAppName().length > 0) {
+    keyPrefix += featureFlagConfig.getAppName() + '.';
+  }
   return {
     isPresent: function(key) {
       var value = get(key);
@@ -143,7 +144,7 @@ angular.module('feature-flags').service('featureFlagOverrides', ['$rootElement',
   };
 }]);
 
-function FeatureFlags($q, featureFlagOverrides, initialFlags) {
+angular.module('feature-flags').service('featureFlags', ['$q', 'featureFlagOverrides', 'featureFlagConfig', function($q, featureFlagOverrides, featureFlagConfig) {
   var serverFlagCache = {},
     flags = [],
 
@@ -205,8 +206,9 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
     },
 
     init = function() {
-      if (initialFlags) {
-        set(initialFlags);
+      var iniFlags = featureFlagConfig.getInitialFlags();
+      if (iniFlags) {
+        set(iniFlags);
       }
     };
   init();
@@ -221,18 +223,56 @@ function FeatureFlags($q, featureFlagOverrides, initialFlags) {
     isOnByDefault: isOnByDefault,
     isOverridden: isOverridden
   };
+}]);
+
+function FeatureFlagConfig(initialFlags, userAppName) {
+  var initFlags = [],
+    appName = '',
+
+    getInitialFlags = function() {
+      return initFlags;
+    },
+    setInitialFlags = function(value) {
+      initFlags = value;
+    },
+    getAppName = function() {
+      return appName;
+    },
+    setAppName = function(value) {
+      appName = value;
+    },
+    init = function() {
+      if (initialFlags) {
+        initFlags = initialFlags;
+      }
+      if (userAppName) {
+        appName = userAppName;
+      }
+    };
+  init();
+
+  return {
+    getInitialFlags: getInitialFlags,
+    setInitialFlags: setInitialFlags,
+    getAppName: getAppName,
+    setAppName: setAppName
+  };
 }
 
-angular.module('feature-flags').provider('featureFlags', function() {
-  var initialFlags = [];
+angular.module('feature-flags').provider('featureFlagConfig', function() {
+  var initialFlags = [],
+    appName = '';
 
   this.setInitialFlags = function(flags) {
     initialFlags = flags;
   };
 
-  this.$get = ['$q', 'featureFlagOverrides', function($q, featureFlagOverrides) {
-    return new FeatureFlags($q, featureFlagOverrides, initialFlags);
-  }];
+  this.setAppName = function(name) {
+    appName = name;
+  };
+  this.$get = function() {
+    return new FeatureFlagConfig(initialFlags, appName);
+  };
 });
 
 }());
