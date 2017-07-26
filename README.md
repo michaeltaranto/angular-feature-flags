@@ -1,4 +1,4 @@
-## PSA: This repo is looking for a new maintainer to hand the reigns to. Given I am no longer working with the framework I think it would be best for the community if I hand this over to someone who is actively using it. See [here](https://github.com/michaeltaranto/angular-feature-flags/issues/52) if you're interested
+## PSA: This repo is no longer maintained. Feel free to fork it to suit your use case.
 
 [![Build Status](https://img.shields.io/travis/michaeltaranto/angular-feature-flags/master.svg?style=flat-square)](https://travis-ci.org/michaeltaranto/angular-feature-flags)
 [![Coverage Status](https://img.shields.io/coveralls/michaeltaranto/angular-feature-flags.svg?style=flat-square)](https://coveralls.io/github/michaeltaranto/angular-feature-flags?branch=master)
