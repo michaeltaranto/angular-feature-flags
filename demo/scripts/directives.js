@@ -31,6 +31,23 @@ angular.module('my-app')
       replace: true
     };
   })
+  .directive('code', function(featureFlags) {
+    return {
+      restrict: 'E',
+      scope: {},
+      template: '<div class="panel"><button ng-click="codeCtrl.alert()">Click Me!</button></div>',
+      replace: true,
+      controllerAs: 'codeCtrl',
+      controller: function() {
+        var self = this;
+        self.alert = function() {
+          if (featureFlags.isOn('code')) {
+            console.log('Hello!');
+          }
+        };
+      }
+    };
+  })
   .run(function(featureFlags, $http) {
     featureFlags.set($http.get('../data/flags.json'));
   });

@@ -98,6 +98,16 @@ If you need to *hide* elements when a flag is enabled, add the `feature-flag-hid
 </div>
 ```
 
+### Toggling CodeBlocks
+
+The featureFlags.isOn method allows simple toggling of elements based on feature flags, e.g:
+
+```javascript
+  if(featureFlags.isOn('code')) {
+    alert("Hello!");
+  }
+```
+
 ### Running the demo
 
 Running the demo is easy assuming you have Gulp installed:
