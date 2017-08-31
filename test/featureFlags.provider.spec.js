@@ -177,16 +177,23 @@
         });
 
         describe('when I check a feature flag default state', function() {
+            var today = new Date();
+            var future = new Date();
             var onFlag = { key: 'FLAG_KEY_ON', environments: { beta: true } };
             var offFlag = { key: 'FLAG_KEY_OFF', environments: { beta: false } };
             var onFlagOverridden = { key: 'FLAG_KEY_ON_OVERRIDDEN', environments: { beta: true } };
             var offFlagOverridden = { key: 'FLAG_KEY_OFF_OVERRRIDDEN', environments: { beta: false } };
             var undefinedFlag = { key: 'FLAG_UNDEFINED', environments: { beta: false } };
             var undefinedFlagOverridden = { key: 'FLAG_UNDEFINED_OVERRIDDEN', environments: { beta: false } };
+            var invalidInstanceFlag = { key: 'FLAG_KEY_ON_INSTANCE_INVALID', instances: [543], environments: { beta: true } };
+            var validInstanceFlag = { key: 'FLAG_KEY_ON_INSTANCE_VALID', instances: [218, 517], environments: { beta: true } };
+            var onFlagThatHasExpired = { key: 'FLAG_KEY_EXPIRED', expires: '2017-08-30T00:05:54Z', environments: { beta: true } };
+            var onFlagFutureExpiry = { key: 'FLAG_KEY_FUTURE_EXPIRY', expires: future.setDate(today.getHours() + 1), environments: { beta: true } };
 
             beforeEach(function(done) {
-                var flagsToLoad = [onFlag, offFlag, onFlagOverridden, offFlagOverridden];
+                var flagsToLoad = [onFlag, offFlag, onFlagOverridden, offFlagOverridden, invalidInstanceFlag, validInstanceFlag, onFlagThatHasExpired, onFlagFutureExpiry];
                 featureFlags.setEnvironment('beta');
+                featureFlags.setInstance(218);
                 $httpBackend.when('GET', 'data/flags.json').respond(flagsToLoad);
                 featureFlags.set($http.get('data/flags.json')).finally(done);
                 $httpBackend.flush();
@@ -225,6 +232,22 @@
 
             it('should return undefined if the key was not loaded by set() even when enabled', function() {
                 expect(typeof featureFlags.isOnByDefault(undefinedFlagOverridden.key)).toBe('undefined');
+            });
+
+            it('should report feature is off by default when provided instances for flag do not match current instance', function() {
+                expect(featureFlags.isOnByDefault(invalidInstanceFlag.key)).toBe(false);
+            });
+
+            it('should report feature is on by default when provided instances for flag match current instance', function() {
+                expect(featureFlags.isOnByDefault(validInstanceFlag.key)).toBe(true);
+            });
+
+            it('should report feature is off by default when default is on but has expired', function() {
+                expect(featureFlags.isOnByDefault(onFlagThatHasExpired.key)).toBe(false);
+            });
+
+            it('should report feature is on by default when default is on and has not yet expired', function() {
+                expect(featureFlags.isOnByDefault(onFlagFutureExpiry.key)).toBe(true);
             });
         });
 

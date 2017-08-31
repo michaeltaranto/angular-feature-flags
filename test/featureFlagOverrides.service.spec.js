@@ -93,7 +93,7 @@
             beforeEach(function() {
                 spyOn(localStorage, 'removeItem');
                 service.setEnvironment('prod');
-                localStorage.setItem('someOtherData');
+                localStorage.setItem('someOtherData', '');
                 service.set('FLAG_KEY_1', 'VALUE');
                 service.set('FLAG_KEY_2', 'VALUE');
                 service.set('FLAG_KEY_3', 'VALUE');
