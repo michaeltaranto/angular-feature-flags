@@ -1,7 +1,7 @@
 /*!
  * Angular Feature Flags v1.1.0
  *
- * © 2017, Michael Taranto
+ * © 2018, Michael Taranto
  */
 
 (function(){
@@ -63,7 +63,7 @@ angular.module('feature-flags').directive('featureFlagOverrides', ['featureFlags
             $scope.isOnByDefault = featureFlags.isOnByDefault;
         },
         template: '<div class="feature-flags">' +
-                  '    <h1>Feature Flags</h1>' +
+                  '    <h2 class="feature-flags-heading">Feature Flags</h2>' +
                   '    <div id="feature-flag--{{flag.key}}" class="feature-flags-flag" ng-repeat="flag in flags">' +
                   '        <div class="feature-flags-name">{{flag.name || flag.key}}</div>' +
                   '        <div id="feature-flag--{{flag.key}}--enable" class="feature-flags-switch" ng-click="enable(flag.key)" ng-class="{\'active\': isOverridden(flag.key) && isOn(flag.key)}">ON</div>' +
