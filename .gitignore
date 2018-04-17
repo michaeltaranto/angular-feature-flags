@@ -4,3 +4,4 @@ demo/scripts/featureFlags.min.js
 .idea
 bower_components
 coverage
+.iml

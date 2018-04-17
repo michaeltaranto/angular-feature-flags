@@ -25,8 +25,8 @@
 
         describe('when I set the list of flags using an HttpPromise', function() {
             var flags = [
-                    { active: true, key: 'FLAG_KEY' },
-                    { active: false, key: 'FLAG_KEY_2' }
+                    { key: 'FLAG_KEY' },
+                    { key: 'FLAG_KEY_2' }
                 ],
                 promise;
 
@@ -55,8 +55,8 @@
 
         describe('when I set the list of flags using a regular promise', function() {
             var flags = [
-                    { active: true, key: 'FLAG_KEY' },
-                    { active: false, key: 'FLAG_KEY_2' }
+                    { key: 'FLAG_KEY' },
+                    { key: 'FLAG_KEY_2' }
                 ],
                 promise;
 
@@ -81,8 +81,8 @@
 
         describe('when I manually provide an array of flags', function() {
             var flags = [
-                    { active: true, key: 'FLAG_KEY' },
-                    { active: false, key: 'FLAG_KEY_2' }
+                    { key: 'FLAG_KEY' },
+                    { key: 'FLAG_KEY_2' }
                 ],
                 promise;
 
@@ -102,67 +102,58 @@
             });
         });
 
-        describe('when I enable a feature flag override', function() {
-            var flag = { active: null, key: 'FLAG_KEY' };
+        describe('when I enable a feature flag override in the beta environment', function() {
+            var flag = { key: 'FLAG_KEY', environments: { beta: false, prod: false } };
 
             beforeEach(function() {
                 spyOn(featureFlagOverrides, 'set');
-                featureFlags.enable(flag);
+                featureFlags.setEnvironment('beta');
+                featureFlags.enable(flag.key);
             });
 
             it('should set the flag with the correct name and value', function() {
                 expect(featureFlagOverrides.set).toHaveBeenCalledWith(flag.key, true);
             });
-
-            it('should set the flag as active', function() {
-                expect(flag.active).toBe(true);
-            });
         });
 
-        describe('when I disable a feature flag override', function() {
-            var flag = { active: null, key: 'FLAG_KEY' };
+        describe('when I disable a feature flag override  in the beta environment', function() {
+            var flag = { key: 'FLAG_KEY', environments: { beta: true, prod: true } };
 
             beforeEach(function() {
                 spyOn(featureFlagOverrides, 'set');
-                featureFlags.disable(flag);
+                featureFlags.setEnvironment('beta');
+                featureFlags.disable(flag.key);
             });
 
             it('should set the flag with the correct name and value', function() {
                 expect(featureFlagOverrides.set).toHaveBeenCalledWith(flag.key, false);
             });
-
-            it('should set the flag as inactive', function() {
-                expect(flag.active).toBe(false);
-            });
         });
 
         describe('when I reset a feature flag to default', function() {
             var originalFlagValue = true,
-                flag = { active: originalFlagValue, key: 'FLAG_KEY' };
+                flag = { key: 'FLAG_KEY', environments: { beta: originalFlagValue, prod: true } };
 
             beforeEach(function() {
                 $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
                 featureFlags.set($http.get('data/flags.json'));
                 $httpBackend.flush();
+                featureFlags.setEnvironment('beta');
 
                 spyOn(featureFlagOverrides, 'set');
-                featureFlags.disable(flag);
+                featureFlags.disable(flag.key);
 
                 spyOn(featureFlagOverrides, 'remove');
-                featureFlags.reset(flag);
+                featureFlags.reset(flag.key);
             });
 
             it('should remove the flag', function() {
                 expect(featureFlagOverrides.remove).toHaveBeenCalledWith(flag.key);
             });
-
-            it('should reset the flag to the default value', function() {
-                expect(flag.active).toBe(originalFlagValue);
-            });
         });
 
         describe('when I check if there is an local override', function() {
-            var flag = { active: null, key: 'FLAG_KEY' };
+            var flag = { key: 'FLAG_KEY' };
 
             describe('if there is', function() {
                 beforeEach(function() {
@@ -186,15 +177,16 @@
         });
 
         describe('when I check a feature flag default state', function() {
-            var onFlag = { active: true, key: 'FLAG_KEY_ON' };
-            var offFlag = { active: false, key: 'FLAG_KEY_OFF' };
-            var onFlagOverridden = { active: true, key: 'FLAG_KEY_ON_OVERRIDDEN' };
-            var offFlagOverridden = { active: false, key: 'FLAG_KEY_OFF_OVERRRIDDEN' };
-            var undefinedFlag = { key: 'FLAG_UNDEFINED' };
-            var undefinedFlagOverridden = { key: 'FLAG_UNDEFINED_OVERRIDDEN' };
+            var onFlag = { key: 'FLAG_KEY_ON', environments: { beta: true } };
+            var offFlag = { key: 'FLAG_KEY_OFF', environments: { beta: false } };
+            var onFlagOverridden = { key: 'FLAG_KEY_ON_OVERRIDDEN', environments: { beta: true } };
+            var offFlagOverridden = { key: 'FLAG_KEY_OFF_OVERRRIDDEN', environments: { beta: false } };
+            var undefinedFlag = { key: 'FLAG_UNDEFINED', environments: { beta: false } };
+            var undefinedFlagOverridden = { key: 'FLAG_UNDEFINED_OVERRIDDEN', environments: { beta: false } };
 
             beforeEach(function(done) {
                 var flagsToLoad = [onFlag, offFlag, onFlagOverridden, offFlagOverridden];
+                featureFlags.setEnvironment('beta');
                 $httpBackend.when('GET', 'data/flags.json').respond(flagsToLoad);
                 featureFlags.set($http.get('data/flags.json')).finally(done);
                 $httpBackend.flush();
@@ -238,10 +230,11 @@
 
         describe('when I check a feature flags state', function() {
             describe('if the feature is disabled on the server', function() {
-                var flag = { active: false, key: 'FLAG_KEY' };
+                var flag = { key: 'FLAG_KEY', environments: { beta: true, prod: false } };
 
                 beforeEach(function() {
                     $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
+                    featureFlags.setEnvironment('beta');
                     featureFlags.set($http.get('data/flags.json'));
                     $httpBackend.flush();
                 });
@@ -268,16 +261,17 @@
                     });
 
                     it('should report the feature as being off', function() {
-                        expect(featureFlags.isOn(flag.key)).toBe(flag.active);
+                        expect(featureFlags.isOn(flag.key)).toBe(flag.environments.beta);
                     });
                 });
             });
 
             describe('if the feature is enabled on the server', function() {
-                var flag = { active: true, key: 'FLAG_KEY' };
+                var flag = { key: 'FLAG_KEY', environments: { beta: true, prod: false } };
 
                 beforeEach(function() {
                     $httpBackend.when('GET', 'data/flags.json').respond([ flag ]);
+                    featureFlags.setEnvironment('beta');
                     featureFlags.set($http.get('data/flags.json'));
                     $httpBackend.flush();
                 });
