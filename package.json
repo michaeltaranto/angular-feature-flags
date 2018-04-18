@@ -1,22 +1,23 @@
 {
   "name": "angular-feature-flags",
   "title": "Angular Feature Flags",
-  "version": "1.1.0",
+  "version": "1.6.1",
   "description": "Feature Flag module for Angular JS apps",
+  "main": "index.js",
   "keywords": [
     "angular",
     "feature flag",
     "feature switch"
   ],
-  "homepage": "https://github.com/mjt01/angular-feature-flags",
-  "bugs": "https://github.com/mjt01/angular-feature-flags/issues",
+  "homepage": "https://github.com/michaeltaranto/angular-feature-flags",
+  "bugs": "https://github.com/michaeltaranto/angular-feature-flags/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mjt01/angular-feature-flags.git"
+    "url": "https://github.com/michaeltaranto/angular-feature-flags.git"
   },
   "author": {
     "name": "Michael Taranto",
-    "homepage": "https://github.com/mjt01"
+    "homepage": "https://github.com/michaeltaranto"
   },
   "contributors": [
     {
@@ -27,7 +28,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://mjt01.mit-license.org"
+      "url": "http://michaeltaranto.mit-license.org"
     }
   ],
   "engines": {

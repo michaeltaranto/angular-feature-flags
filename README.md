@@ -1,5 +1,9 @@
-[![Build Status](https://travis-ci.org/mjt01/angular-feature-flags.png?branch=master)](https://travis-ci.org/mjt01/angular-feature-flags)
-[![Coverage Status](https://coveralls.io/repos/mjt01/angular-feature-flags/badge.png)](https://coveralls.io/r/mjt01/angular-feature-flags)
+## PSA: This repo is no longer maintained. Feel free to fork it to suit your use case.
+
+[![Build Status](https://img.shields.io/travis/michaeltaranto/angular-feature-flags/master.svg?style=flat-square)](https://travis-ci.org/michaeltaranto/angular-feature-flags)
+[![Coverage Status](https://img.shields.io/coveralls/michaeltaranto/angular-feature-flags.svg?style=flat-square)](https://coveralls.io/github/michaeltaranto/angular-feature-flags?branch=master)
+[![npm](https://img.shields.io/npm/v/angular-feature-flags.svg?style=flat-square)](https://www.npmjs.com/package/angular-feature-flags)
+
 ## angular-feature-flags
 
 An AngularJS module that allows you to control when you release new features in your app by putting them behind feature flags/switches. **This module only supports Angular v1.2 and up.**
@@ -55,6 +59,8 @@ Flag data can be set via the `featureFlags` service using the `set` method. This
 For example, if you were loading your flag data from a remote JSON file:
 
 ```js
+var myApp = angular.module('app', ['feature-flags']);
+
 myApp.run(function(featureFlags, $http) {
   featureFlags.set($http.get('/data/flags.json'));
 });
@@ -65,6 +71,8 @@ myApp.run(function(featureFlags, $http) {
 From version v1.1.0 you can also initialize the feature flags in the config phase of your application:
 
 ```js
+var myApp = angular.module('app', ['feature-flags']);
+
 myApp.config(function(featureFlagsProvider) {
   featureFlagsProvider.setInitialFlags([
     { "key": "...", "active": "...", "name": "...", "description": "..." },
@@ -112,4 +120,4 @@ This relies on Gulp also obviously, to run the test suite:
 
 ## License
 
-[MIT](http://mjt01.mit-license.org)
+[MIT](http://michaeltaranto.mit-license.org)

@@ -1,38 +1,38 @@
 [
-    {
-        "key": "activityFeed",
-        "environments": {
-            "beta": true,
-            "prod": true
-        },
-        "name": "Activity Feed",
-        "description": "Shows the users activity feed as a stream of events that have occurred."
+  {
+    "key": "activityFeed",
+    "environments": {
+      "beta": true,
+      "prod": true
     },
-    {
-        "key": "messages",
-        "environments": {
-            "beta": true,
-            "prod": false
-        },
-        "name": "Messaging",
-        "description": "Messaging module that allows users to send and receive messages to one another."
+    "name": "Activity Feed",
+    "description": "Shows the users activity feed as a stream of events that have occurred."
+  },
+  {
+    "key": "messages",
+    "environments": {
+      "beta": true,
+      "prod": false
     },
-    {
-        "key": "userProfile",
-        "environments": {
-            "beta": false,
-            "prod": false
-        },
-        "name": "User Profile",
-        "description": "Displays all the information about the logged in user's profile."
+    "name": "Messaging",
+    "description": "Messaging module that allows users to send and receive messages to one another."
+  },
+  {
+    "key": "userProfile",
+    "environments": {
+      "beta": false,
+      "prod": false
     },
-    {
-        "key": "settings",
-        "environments": {
-            "beta": false,
-            "prod": true
-        },
-        "name": "Settings",
-        "description": "Configure the user's settings and preferences for the app."
-    }
+    "name": "User Profile",
+    "description": "Displays all the information about the logged in user's profile."
+  },
+  {
+    "key": "settings",
+    "environments": {
+      "beta": false,
+      "prod": true
+    },
+    "name": "Settings",
+    "description": "Configure the user's settings and preferences for the app."
+  }
 ]
