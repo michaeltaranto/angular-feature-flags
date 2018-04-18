@@ -36,6 +36,7 @@
   },
   "scripts": {
     "test": "gulp",
+    "start": "gulp build",
     "coveralls": "gulp coveralls"
   },
   "devDependencies": {
@@ -53,10 +54,10 @@
     "gulp-uglify": "^0.2.1",
     "gulp-util": "^3.0.1",
     "gulp-wrap": "^0.3.0",
-    "karma": "^0.12.9",
+    "karma": "^0.13.22",
     "karma-coverage": "~0.1.5",
     "karma-jasmine": "^0.1.5",
-    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-phantomjs-launcher": "1.0.4",
     "opn": "^0.1.1"
   }
 }

@@ -1,0 +1,5 @@
+# Force all line ending to be lf to keep linter settings happy
+* text eol=lf
+
+# Don't modify binary files
+*.png binary
