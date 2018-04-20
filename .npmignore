@@ -1,2 +1,7 @@
 src
 coverage
+test
+demo
+.*
+bower.json
+gulpfile.js

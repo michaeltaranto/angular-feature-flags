@@ -5,3 +5,4 @@ demo/scripts/featureFlags.min.js
 bower_components
 coverage
 .iml
+*.tgz

@@ -1,10 +1,7 @@
-## PSA: This repo is no longer maintained. Feel free to fork it to suit your use case.
-
-[![Build Status](https://img.shields.io/travis/michaeltaranto/angular-feature-flags/master.svg?style=flat-square)](https://travis-ci.org/michaeltaranto/angular-feature-flags)
-[![Coverage Status](https://img.shields.io/coveralls/michaeltaranto/angular-feature-flags.svg?style=flat-square)](https://coveralls.io/github/michaeltaranto/angular-feature-flags?branch=master)
-[![npm](https://img.shields.io/npm/v/angular-feature-flags.svg?style=flat-square)](https://www.npmjs.com/package/angular-feature-flags)
-
+[![Build Status](https://travis-ci.org/PageUpPeopleOrg/angular-feature-flags.svg?branch=master)](https://travis-ci.org/PageUpPeopleOrg/angular-feature-flags)
 ## angular-feature-flags
+
+> This repo is forked from https://github.com/michaeltaranto/angular-feature-flags which is no longer being supported. This version provides support for functionality specifically needed by [PageUp](https://www.pageuppeople.com/), your milage may vary.
 
 An AngularJS module that allows you to control when you release new features in your app by putting them behind feature flags/switches. **This module only supports Angular v1.2 and up.**
 
