@@ -114,6 +114,18 @@ This relies on Gulp also obviously, to run the test suite:
 - Switch to the directory
 - Run 'gulp test'
 
+### Deploying a new version
+
+- Create feature branch, do your work and make a pull request
+- Get the pull request approved, squash and merge onto master
+
+```
+$ git checkout master
+$ npm version patch
+$ git push --tags
+```
+
+You can also use `npm version major` or `npm version minor` depending on whether you've made breaking changes
 
 ## License
 
