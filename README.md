@@ -122,7 +122,7 @@ This relies on Gulp also obviously, to run the test suite:
 ```
 $ git checkout master
 $ npm version patch
-$ git push --tags
+$ git push && push --tags
 ```
 
 You can also use `npm version major` or `npm version minor` depending on whether you've made breaking changes

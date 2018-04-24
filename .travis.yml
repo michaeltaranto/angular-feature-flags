@@ -8,7 +8,7 @@ before_install:
 
 deploy:
   provider: npm
-  email: "paul.heasley@gmail.com"
+  email: $NPM_EMAIL
   api_key: $NPM_TOKEN
   skip_cleanup: true
   on:
