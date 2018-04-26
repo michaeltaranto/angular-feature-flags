@@ -1,6 +1,7 @@
 angular.module('feature-flags').service('featureFlagOverrides', function($rootElement) {
-  var keyPrefix = '',
-    appName = $rootElement.attr('ng-app'),
+  var appName = $rootElement.attr('ng-app'),
+    environment = '',
+    keyPrefix = 'featureFlags.' + appName + '.',
 
     localStorageAvailable = (function() {
       try {
@@ -20,8 +21,18 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
       return key.indexOf(keyPrefix) === 0;
     },
 
+    getPrefix = function() {
+      return 'featureFlags.' + appName + '.' + (environment && environment + '.');
+    },
+
     setEnvironment = function(value) {
-      keyPrefix = 'featureFlags.' + appName + '.' + value + '.';
+      environment = value;
+      keyPrefix = getPrefix();
+    },
+
+    setAppName = function($appName) {
+      appName = $appName;
+      keyPrefix = getPrefix();
     },
 
     set = function(value, flagName) {
@@ -48,6 +59,7 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
       return typeof value !== 'undefined' && value !== null;
     },
     setEnvironment: setEnvironment,
+    setAppName: setAppName,
     get: get,
     set: function(flag, value) {
       if (angular.isObject(flag)) {
