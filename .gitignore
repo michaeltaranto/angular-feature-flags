@@ -1,9 +1,7 @@
 node_modules
 dist
-test/coverage
 demo/scripts/featureFlags.min.js
 .idea
 bower_components
-coverage
 .iml
 *.tgz

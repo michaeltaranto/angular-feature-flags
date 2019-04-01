@@ -10,13 +10,8 @@ var gulp = require('gulp'),
   header = require('gulp-header'),
   wrap = require('gulp-wrap'),
   concat = require('gulp-concat'),
-  clean = require('gulp-clean'),
   ngannotate = require('gulp-ng-annotate'),
   karma = require('gulp-karma'),
-  ghpages = require('gh-pages'),
-  path = require('path'),
-  gutil = require('gulp-util'),
-  coveralls = require('gulp-coveralls'),
   pkg = require('./package.json'),
 
   //--------------------------------
@@ -26,19 +21,7 @@ var gulp = require('gulp'),
     return {
       frameworks: ['jasmine'],
       browsers: ['PhantomJS'],
-      reporters: ['progress', 'coverage'],
-      preprocessors: {
-        'src/*.js': ['coverage']
-      },
-      coverageReporter: {
-        reporters: [{
-          type: 'html',
-          dir: 'test/coverage/'
-        }, {
-          type: 'lcov',
-          dir: 'test/coverage/'
-        }]
-      },
+      reporters: ['progress'],
       action: action
     };
   },
@@ -69,22 +52,12 @@ gulp.task('lint', function() {
     .pipe(eslint.failOnError());
 });
 
-gulp.task('test', ['clean'], function() {
+gulp.task('test', function() {
   return gulp.src(KARMA_FILES)
     .pipe(karma(karmaConfig('run')))
     .on('error', function(err) {
       throw err;
     });
-});
-
-gulp.task('clean', function() {
-  return gulp.src('test/coverage')
-    .pipe(clean());
-});
-
-gulp.task('coveralls', ['test'], function() {
-  return gulp.src(['test/coverage/**/lcov.info'])
-    .pipe(coveralls());
 });
 
 gulp.task('connect', function() {
@@ -95,9 +68,9 @@ gulp.task('connect', function() {
   });
 });
 
-gulp.task('server', ['connect'], function() {
+gulp.task('server', gulp.series('connect', function() {
   opn("http://localhost:" + PORT);
-});
+}));
 
 gulp.task('reload', function() {
   return gulp.src('demo/**/*.*')
@@ -129,20 +102,14 @@ gulp.task('build', function() {
     .pipe(gulp.dest('demo/scripts'));
 });
 
-gulp.task('dev', ['build', 'server'], function() {
+gulp.task('dev', gulp.series('build', 'server', function() {
   gulp.watch(['demo/**/*.*'], ['reload']);
   gulp.watch(['demo/scripts/*.js', TEST_FILES], ['lint']);
   gulp.watch(SRC_FILES, ['lint', 'build']);
   gulp.src(KARMA_FILES)
     .pipe(karma(karmaConfig('watch')));
-});
+}));
 
-gulp.task('deploy', ['build'], function(done) {
-  ghpages.publish(path.join(__dirname, 'demo'), {
-    logger: gutil.log
-  }, done);
-});
-
-gulp.task('precommit', ['lint', 'test', 'build']);
-gulp.task('demo', ['build', 'server']);
-gulp.task('default', ['precommit']);
+gulp.task('precommit', gulp.series('lint', 'test', 'build'));
+gulp.task('demo', gulp.series('build', 'server'));
+gulp.task('default', gulp.parallel('precommit'));

@@ -52,7 +52,7 @@ module.exports = {
     "no-caller": 2,
     "no-div-regex": 2,
     "no-else-return": 2,
-    "no-empty-label": 2,
+    "no-labels": 2,
     "no-eq-null": 2,
     "no-eval": 2,
     "no-extend-native": 2,
@@ -128,6 +128,7 @@ module.exports = {
     "func-style": 0,
     "indent": [2, 2, { "SwitchCase": 1 }],
     "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
+    "keyword-spacing": [2, { "before": true, "after": true }],
     "linebreak-style": [2, "unix"],
     "new-cap": 2,
     "new-parens": 2,
@@ -144,12 +145,10 @@ module.exports = {
     "quotes": [2, "single"],
     "semi-spacing": [2, { "before": false, "after": true }],
     "semi": [2, "always"],
-    "space-after-keywords": [2, "always"],
     "space-before-blocks": [2, "always"],
     "space-before-function-paren": [2, "never"],
     "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
-    "space-return-throw-case": 2,
     "spaced-comment": [2, "always"]
   }
 }

@@ -45,6 +45,7 @@ angular.module('feature-flags').service('featureFlagOverrides', function($rootEl
       if (localStorageAvailable) {
         return localStorage.getItem(prefixedKeyFor(flagName));
       }
+      return null;
     },
 
     remove = function(flagName) {
