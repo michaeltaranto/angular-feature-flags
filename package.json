@@ -1,7 +1,7 @@
 {
   "name": "pageup-angular-feature-flags",
   "title": "PageUp's Angular Feature Flags",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Feature Flag module for Angular JS apps",
   "main": "index.js",
   "keywords": [
